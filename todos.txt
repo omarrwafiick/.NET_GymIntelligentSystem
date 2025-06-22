@@ -1,0 +1,8 @@
+proxy
+
+modelBuilder.Entity<User>()
+    .HasDiscriminator<Role>("Role")
+    .HasValue<Admin>(Role.Admin)
+    .HasValue<Trainer>(Role.Trainer)
+    .HasValue<Member>(Role.Member)
+    .HasValue<Receptionist>(Role.Receptionist);
