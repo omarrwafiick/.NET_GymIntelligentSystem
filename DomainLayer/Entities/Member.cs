@@ -23,12 +23,10 @@ namespace DomainLayer.Entities
         public float WeightKg { get; private set; }
         public Goal Goal { get; private set; }
         public DateTime DateOfBirth { get; private set; }
-        public ICollection<WorkoutLog> WorkoutLogs { get; private set; } = new List<WorkoutLog>();
-        public ICollection<NutritionPlan> NutritionPlans { get; private set; } = new List<NutritionPlan>();
-        public ICollection<WorkoutPlan> WorkoutPlans { get; private set; } = new List<WorkoutPlan>();
-        public void AddWorkoutLogs(WorkoutLog workoutLog) => WorkoutLogs.Add(workoutLog);
-        public void AddNutritionPlans(NutritionPlan nutritionPlan) => NutritionPlans.Add(nutritionPlan);
-        public void AddWorkoutPlans(WorkoutPlan workoutPlans) => WorkoutPlans.Add(workoutPlans);
+        public virtual ICollection<WorkoutLog> WorkoutLogs { get; set; } = new List<WorkoutLog>();
+        public virtual ICollection<NutritionPlan> NutritionPlans { get; set; } = new List<NutritionPlan>();
+        public virtual ICollection<WorkoutPlan> WorkoutPlans { get; set; } = new List<WorkoutPlan>();
+         
         public static Member Factory(
             string fullName, string username, string email, string passwordHash,
             float heightCm, float weightKg, Goal goal, DateTime dateOfBirth) 

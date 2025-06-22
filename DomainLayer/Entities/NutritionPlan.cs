@@ -17,7 +17,7 @@ namespace DomainLayer.Entities
             AssignedOn = DateTime.UtcNow;
         }
         public Guid MemberId { get; private set; }
-        public Member Member { get; private set; } 
+        public virtual Member Member { get; private set; } 
         public DateTime AssignedOn { get; private set; }
         public int CaloriesPerDay { get; private set; }
         public float ProteinGrams { get; private set; }

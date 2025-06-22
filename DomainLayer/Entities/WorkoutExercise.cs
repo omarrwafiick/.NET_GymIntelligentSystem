@@ -18,7 +18,7 @@ namespace DomainLayer.Entities
             WeightKg = weightKg;
         }
         public Guid WorkoutSessionId { get; private set; }
-        public WorkoutSession WorkoutSession { get; private set; } 
+        public virtual WorkoutSession WorkoutSession { get; private set; } 
         public ExerciseType ExerciseType { get; private set; }  
         public int Sets { get; private set; }
         public int Reps { get; private set; }

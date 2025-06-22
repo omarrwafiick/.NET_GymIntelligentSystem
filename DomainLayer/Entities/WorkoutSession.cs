@@ -11,10 +11,10 @@ namespace DomainLayer.Entities
             Notes = notes;
         }
         public Guid WorkoutPlanId { get; private set; }
-        public WorkoutPlan WorkoutPlan { get; private set; } 
+        public virtual WorkoutPlan WorkoutPlan { get; private set; } 
         public DateTime ScheduledDate { get; private set; }
         public string Notes { get; private set; } 
-        public ICollection<WorkoutExercise> Exercises { get; set; } = new List<WorkoutExercise>();
+        public virtual ICollection<WorkoutExercise> Exercises { get; set; } = new List<WorkoutExercise>();
         public static WorkoutSession Factory(Guid workoutPlanId, DateTime scheduledDate, string notes)
             => new WorkoutSession(workoutPlanId, scheduledDate, notes);
     }

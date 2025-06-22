@@ -17,11 +17,11 @@ namespace DomainLayer.Entities
             Sessions = sessions;
         }
         public Guid MemberId { get; private set; }
-        public Member Member { get; private set; } 
+        public virtual Member Member { get; private set; } 
         public PlanType PlanType { get; private set; }
         public DateTime StartDate { get; private set; }
         public int DurationInDays { get; private set; }
-        public ICollection<WorkoutSession> Sessions { get; private set; } = new List<WorkoutSession>();
+        public virtual ICollection<WorkoutSession> Sessions { get; private set; } = new List<WorkoutSession>();
         public static WorkoutPlan Factory
             (Guid memberId, PlanType planType, DateTime startDate
             , int durationInDays, ICollection<WorkoutSession> sessions)

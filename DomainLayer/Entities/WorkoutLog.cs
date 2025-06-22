@@ -18,7 +18,7 @@ namespace DomainLayer.Entities
             PerformedOn = DateTime.UtcNow;
         } 
         public Guid MemberId { get; private set; }
-        public Member Member { get; private set; } 
+        public virtual Member Member { get; private set; } 
         public DateTime PerformedOn { get; private set; }
         public ExerciseType ExerciseType { get; private set; }
         public int Sets { get; private set; }
