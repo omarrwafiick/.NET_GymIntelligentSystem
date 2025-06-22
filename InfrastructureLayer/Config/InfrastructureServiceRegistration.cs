@@ -1,4 +1,6 @@
-﻿using InfrastructureLayer.Data;
+﻿using ApplicationLayer.Contracts;
+using InfrastructureLayer.Data;
+using InfrastructureLayer.Implementations.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection; 
@@ -14,7 +16,7 @@ namespace InfrastructureLayer.Config
                 .UseLazyLoadingProxies()
                 .UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
-             //services.AddScoped<, >(); repos
+             services.AddScoped(typeof(IApplicationRepository<>), typeof(ApplicationRepository<>));  
 
             return services;
         }

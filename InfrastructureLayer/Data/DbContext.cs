@@ -18,6 +18,7 @@ namespace InfrastructureLayer.Data
         public DbSet<WorkoutLog> WorkoutLogs { get; set; }
         public DbSet<NutritionPlan> NutritionPlans { get; set; } 
         public DbSet<ProgressReport> ProgressReports { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

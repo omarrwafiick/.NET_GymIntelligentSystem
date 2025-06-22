@@ -1,3 +1,4 @@
+using ApplicationLayer.Contracts;
 using InfrastructureLayer.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddMediatR(c =>
+    c.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
 
 var app = builder.Build();
  
