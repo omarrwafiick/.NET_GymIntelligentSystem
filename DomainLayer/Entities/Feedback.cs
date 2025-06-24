@@ -16,7 +16,7 @@ namespace DomainLayer.Entities
         }
 
         public Guid UserId { get; private set; }
-        public User User { get; private set; } 
+        public virtual User User { get; private set; } 
         public int Rating { get; private set; } 
         public string Comment { get; private set; } 
         public string? TargetType { get; private set; }

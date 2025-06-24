@@ -1,4 +1,6 @@
-﻿using MediatR; 
+﻿using ApplicationLayer.Dtos.Members;
+using ApplicationLayer.Dtos.Subscriptions;
+using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -16,19 +18,19 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("purchase/{subscriberid}")]
-        public async Task<IActionResult> SubscriptionPurchase([FromRoute] string subscriberid)
+        public async Task<IActionResult> SubscriptionPurchase([FromRoute] string subscriberid, [FromBody] PurchaseSubscriptionDto dto)
         {
             return Ok();
         }
 
         [HttpPost("cancel/{subscriberid}")]
-        public async Task<IActionResult> CancelSubscription([FromRoute] string subscriberid)
+        public async Task<IActionResult> CancelSubscription([FromRoute] string subscriberid, [FromBody] CancelSubscriptionDto dto)
         {
             return Ok();
         }
 
         [HttpPost("upgrade/{subscriberid}")]
-        public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscriberid)
+        public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscriberid, [FromBody] UpgradeSubscriptionDto dto)
         {
             return Ok();
         }

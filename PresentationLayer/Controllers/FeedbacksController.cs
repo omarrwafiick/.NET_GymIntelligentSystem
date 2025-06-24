@@ -1,4 +1,6 @@
-﻿using MediatR; 
+﻿using ApplicationLayer.Dtos.Admins;
+using ApplicationLayer.Dtos.Feedbacks;
+using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -14,25 +16,25 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("support/contact")]
-        public async Task<IActionResult> ContactSupport()
+        public async Task<IActionResult> ContactSupport([FromBody] ContactSupportDto dto)
         {
             return Ok();
         }
 
-        [HttpPost("announcements")]
-        public async Task<IActionResult> CreateAnnouncements()
+        [HttpPost("announcement")]
+        public async Task<IActionResult> CreateAnnouncement([FromBody] CreateAnnouncementDto dto)
         {
             return Ok();
         }
 
-        [HttpGet("fetch/announcements")]
+        [HttpGet("announcements")]
         public async Task<IActionResult> GetAnnouncements()
         {
             return Ok();
         }
 
         [HttpPost("feedback")]
-        public async Task<IActionResult> CreateFeedback()
+        public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackDto dto)
         {
             return Ok();
         }

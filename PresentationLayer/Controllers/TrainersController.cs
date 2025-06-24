@@ -1,4 +1,6 @@
-﻿using MediatR; 
+﻿using ApplicationLayer.Dtos.Members;
+using ApplicationLayer.Dtos.Trainers;
+using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -16,7 +18,13 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> Register([FromBody] RegisterTrainerDto dto)
+        {
+            return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] string id)
         {
             return Ok();
         }
@@ -28,7 +36,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("progress/{trainerid}")]
-        public async Task<IActionResult> CreateProgressReport([FromRoute] string trainerid)
+        public async Task<IActionResult> CreateProgressReport([FromRoute] string trainerid, [FromBody] CreateTrainerProgressReportDto dto)
         {
             return Ok();
         }

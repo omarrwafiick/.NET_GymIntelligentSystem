@@ -1,4 +1,6 @@
-﻿using MediatR; 
+﻿using ApplicationLayer.Dtos.Admins;
+using ApplicationLayer.Dtos.Authenticartion;
+using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -20,7 +22,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             return Ok();
         }

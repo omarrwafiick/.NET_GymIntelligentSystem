@@ -1,4 +1,6 @@
 ﻿using ApplicationLayer.Dtos;
+using ApplicationLayer.Dtos.Feedbacks;
+using ApplicationLayer.Dtos.Members;
 using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +19,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] MembersDtos data)
+        public async Task<IActionResult> Register([FromBody] RegisterMemberDto dto)
         {
             //var command = new RegisterMemberCommand();
             //var id = await _mediator.Send(command);
@@ -32,7 +34,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("{userid}/workout")]
-        public async Task<IActionResult> CreateWorkoutLog()
+        public async Task<IActionResult> CreateWorkoutLog([FromBody] CreateWorkoutLogDto dto)
         {
             return Ok();
         }
@@ -44,7 +46,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("{userid}/nutrition")]
-        public async Task<IActionResult> CreateNutritionPlan([FromRoute] string userid)
+        public async Task<IActionResult> CreateNutritionPlan([FromRoute] string userid, [FromBody] CreateNutritionPlanDto dto)
         {
             return Ok();
         }

@@ -1,4 +1,5 @@
-﻿using MediatR; 
+﻿using ApplicationLayer.Dtos.Admins;
+using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -13,13 +14,26 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> CreateAdmin()
+        public async Task<IActionResult> Register([FromBody] RegisterAdminDto dto)
         { 
             return Ok();
         }
 
-        [HttpPost("permission/{id}")]
-        public async Task<IActionResult> AddPermission([FromRoute] string id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] string id)
+        {
+            return Ok();
+        }
+
+
+        [HttpPost("permission/{adminid}")]
+        public async Task<IActionResult> AddPermission([FromRoute] string adminid, [FromBody] AddPermissionDto dto)
+        {
+            return Ok();
+        }
+
+        [HttpGet("permissions/{adminid}")]
+        public async Task<IActionResult> GetPermissions([FromRoute] string adminid)
         {
             return Ok();
         }

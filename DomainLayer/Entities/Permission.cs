@@ -9,7 +9,7 @@ namespace DomainLayer.Entities
             PermissionName = permissionName; 
         }
         public string PermissionName { get; private set; } 
-        public AdminPermission AdminPermission { get; private set; }
+        public virtual AdminPermission AdminPermission { get; private set; }
         public static Permission Factory(string permissionName)
             => new Permission(permissionName);
     }

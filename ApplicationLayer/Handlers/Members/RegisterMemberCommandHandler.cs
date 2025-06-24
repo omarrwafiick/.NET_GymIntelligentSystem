@@ -1,14 +1,14 @@
 ﻿using ApplicationLayer.Commands.Members;
 using ApplicationLayer.Contracts;
 using DomainLayer.Entities;
-using MediatR; 
-namespace ApplicationLayer.Handlers
+using MediatR;
+namespace ApplicationLayer.Handlers.Members
 {
-    public class RegisterMemberHandler : IRequestHandler<RegisterMemberCommand, Guid>
+    public class RegisterMemberCommandHandler : IRequestHandler<RegisterMemberCommand, Guid>
     {
         private readonly IApplicationRepository<Member> _repository;
 
-        public RegisterMemberHandler(IApplicationRepository<Member> repository)
+        public RegisterMemberCommandHandler(IApplicationRepository<Member> repository)
         {
             _repository = repository;
         }
@@ -26,7 +26,7 @@ namespace ApplicationLayer.Handlers
                 request.DateOfBirth
             );
 
-            _repository.CreateAsync(member); 
+            _repository.CreateAsync(member);
 
             return member.Id;
         }

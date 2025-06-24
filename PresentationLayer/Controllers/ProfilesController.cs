@@ -1,5 +1,8 @@
-﻿using MediatR;
+﻿using ApplicationLayer.Dtos.Members;
+using ApplicationLayer.Dtos.Profiles;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace PresentationLayer.Controllers
 {
@@ -16,13 +19,13 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProfile([FromRoute] string id)
+        public async Task<IActionResult> UpdateProfile([FromRoute] string id, [FromBody] UpdateProfileDtos dto)
         { 
             return Ok();
         }
 
         [HttpPost("{id}/change-password")]
-        public async Task<IActionResult> ChangePassword([FromRoute] string id)
+        public async Task<IActionResult> ChangePassword([FromRoute] string id, [FromBody] ChangePasswordDto dto)
         {
             return Ok();
         }

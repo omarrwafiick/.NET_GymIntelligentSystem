@@ -1,4 +1,5 @@
-﻿using MediatR; 
+﻿using ApplicationLayer.Dtos.WorkoutPlans;
+using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -16,7 +17,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("{memberid}")]
-        public async Task<IActionResult> CreateWorkoutPlan()
+        public async Task<IActionResult> CreateWorkoutPlan([FromBody] CreateWorkoutPlanDto dto)
         {
             return Ok();
         }
@@ -28,7 +29,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("{planId}/add-session")]
-        public async Task<IActionResult> AddWorkoutSession([FromRoute] string planId)
+        public async Task<IActionResult> AddWorkoutSession([FromRoute] string planId, [FromBody] AddWorkoutSessionDto dto)
         {
             return Ok();
         }
@@ -39,14 +40,14 @@ namespace PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpPost("{memberId}/history")]
+        [HttpGet("{memberId}/history")]
         public async Task<IActionResult> GetWorkoutPlansHistory([FromRoute] string memberId)
         {
             return Ok();
         }
 
         [HttpPut("{planId}/reactivate")]
-        public async Task<IActionResult> ReactivateWorkoutPlan([FromRoute] string planId)
+        public async Task<IActionResult> ReactivateWorkoutPlan([FromRoute] string planId, [FromBody] ReactivateWorkoutPlanDto dto)
         {
             return Ok();
         }

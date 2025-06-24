@@ -19,7 +19,7 @@ namespace DomainLayer.Entities
         }
 
         public Guid MemberId { get; private set; }
-        public Member Member { get; private set; } 
+        public virtual Member Member { get; private set; } 
         public decimal Amount { get; private set; }
         public CurrencyType Currency { get; private set; }  
         public PaymentMethod PaymentMethod { get; private set; } 
