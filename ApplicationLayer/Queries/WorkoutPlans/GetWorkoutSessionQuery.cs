@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Dtos.Trainers;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.WorkoutPlans
-{
-    internal class GetWorkoutSessionQueryHandler
-    {
-    }
+{ 
+    public record GetWorkoutSessionsQuery(string MemberId) : IRequest<List<GetWorkoutSessionDto>>;
+
 }

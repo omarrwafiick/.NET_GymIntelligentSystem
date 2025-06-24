@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR; 
 
 namespace ApplicationLayer.Commands.Subscriptions
-{
-    internal class CancelSubscriptionCommandHandler
-    {
-    }
+{ 
+    public record CancelSubscriptionCommand(
+        string subscribtionId
+    ) : IRequest<bool>;
 }

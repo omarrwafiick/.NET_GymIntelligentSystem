@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using ApplicationLayer.Dtos.Subscriptions;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Subscriptions
-{
-    internal class GetActiveSubscriptionsQueryHandler
-    {
-    }
+{ 
+    public record GetActiveSubscriptionsQuery() : IRequest<List<GetSubscriptionDto>>;
+
 }

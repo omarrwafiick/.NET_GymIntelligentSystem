@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationLayer.Commands.Feedbacks;
+using ApplicationLayer.Contracts;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handlers.Feedbacks
 {
-    internal class CreateAnnouncementCommandHandler
+    public class CreateAnnouncementCommandHandler : IRequestHandler<CreateAnnouncementCommand, bool>
     {
+        private readonly IApplicationRepository<Announcement> _repository;
+
+        public CreateAnnouncementCommandHandler(IApplicationRepository<Announcement> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<bool> Handle(CreateAnnouncementCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

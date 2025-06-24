@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR; 
 
 namespace ApplicationLayer.Commands.Admins
 {
-    internal class RegisterAdminCommand
-    {
-    }
+    public record RegisterAdminCommand(
+        string FullName,
+        string Username,
+        string Email,
+        string Password
+    ) : IRequest<Guid>;
 }

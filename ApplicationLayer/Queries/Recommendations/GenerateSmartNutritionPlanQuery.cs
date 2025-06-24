@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using ApplicationLayer.Dtos.Recommendations;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Recommendations
-{
-    internal class GenerateSmartNutritionPlanQuery
-    {
-    }
+{ 
+    public record GenerateSmartNutritionPlanQuery(string MemberId) : IRequest<SmartNutritionPlanDto>;
 }

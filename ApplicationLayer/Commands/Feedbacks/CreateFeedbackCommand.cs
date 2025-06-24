@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DomainLayer.Enums;
+using MediatR; 
 
 namespace ApplicationLayer.Commands.Feedbacks
-{
-    internal class CreateFeedbackCommand
-    {
-    }
+{ 
+    public record CreateFeedbackCommand(string userId, int rating, string comment, TargetType targetType, string targetId) : IRequest<bool>;
+
 }

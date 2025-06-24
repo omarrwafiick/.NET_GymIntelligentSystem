@@ -15,11 +15,12 @@ namespace ApplicationLayer.Handlers.Members
 
         public async Task<Guid> Handle(RegisterMemberCommand request, CancellationToken cancellationToken)
         {
+            //HASH PASSWORD
             var member = Member.Factory(
                 request.FullName,
                 request.Username,
                 request.Email,
-                request.Password, // TODO: hash this before
+                request.Password, 
                 request.HeightCm,
                 request.WeightKg,
                 request.Goal,

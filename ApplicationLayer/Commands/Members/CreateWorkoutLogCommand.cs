@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DomainLayer.Enums;
+using MediatR; 
 
 namespace ApplicationLayer.Commands.Members
-{
-    internal class CreateWorkoutLogCommand
-    {
-    }
+{ 
+    public record CreateWorkoutLogCommand(
+        string MemberId, ExerciseType ExerciseType, int Sets, int Reps, float WeightKg, string Notes
+    ) : IRequest<bool>;
 }

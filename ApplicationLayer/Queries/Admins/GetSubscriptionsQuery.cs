@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ using ApplicationLayer.Dtos.Subscriptions;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Admins
-{
-    internal class GetSubscriptionsQuery
-    {
-    }
+{ 
+    public record GetSubscriptionsQuery() : IRequest<List<GetSubscriptionDto>>;
 }

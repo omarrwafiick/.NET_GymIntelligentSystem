@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Dtos.Trainers;
+using MediatR;
+ 
 
 namespace ApplicationLayer.Queries.Admins
-{
-    internal class GetTrainersQuery
-    {
-    }
+{ 
+    public record GetTrainersQuery() : IRequest<List<GetTrainerDto>>;
 }

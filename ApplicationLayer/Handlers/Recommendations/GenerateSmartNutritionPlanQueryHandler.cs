@@ -1,12 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using ApplicationLayer.Contracts;
+using ApplicationLayer.Dtos.Recommendations;
+using ApplicationLayer.Queries.Recommendations;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handlers.Recommendations
 {
-    internal class GenerateSmartNutritionPlanQueryHandler
+    public class GenerateSmartNutritionPlanQueryHandler : IRequestHandler<GenerateSmartNutritionPlanQuery, SmartNutritionPlanDto>
     {
+        private readonly IApplicationRepository<User> _repository;
+
+        public GenerateSmartNutritionPlanQueryHandler(IApplicationRepository<User> repository)
+        {
+            _repository = repository;
+        }
+ 
+        public Task<SmartNutritionPlanDto> Handle(GenerateSmartNutritionPlanQuery request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

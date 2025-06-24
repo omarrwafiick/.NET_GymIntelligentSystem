@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using ApplicationLayer.Contracts;
+using ApplicationLayer.Dtos.Trainers;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Queries.WorkoutPlans
 {
-    internal class GetWorkoutPlansHistoryQueryHandler
+    public class GetWorkoutPlansHistoryQueryHandler : IRequestHandler<GetWorkoutPlansHistoryQuery, List<GetWorkoutPlansDto>>
     {
+        private readonly IApplicationRepository<WorkoutPlan> _repository;
+
+        public GetWorkoutPlansHistoryQueryHandler(IApplicationRepository<WorkoutPlan> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<List<GetWorkoutPlansDto>> Handle(GetWorkoutPlansHistoryQuery request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

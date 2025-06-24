@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DomainLayer.Enums;
+using MediatR; 
 
 namespace ApplicationLayer.Commands.Subscriptions
-{
-    internal class SubscriptionPurchaseCommandHandler
-    {
-    }
+{ 
+    public record SubscriptionPurchaseCommand(
+        string MemberId, PlanType PlanType, DateTime StartDate, int DurationInDays, decimal Amount
+    ) : IRequest<bool>;
 }

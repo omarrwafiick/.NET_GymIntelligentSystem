@@ -47,7 +47,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPut("{planId}/reactivate")]
-        public async Task<IActionResult> ReactivateWorkoutPlan([FromRoute] string planId, [FromBody] ReactivateWorkoutPlanDto dto)
+        public async Task<IActionResult> ReactivateWorkoutPlan([FromRoute] string planId)
         {
             return Ok();
         }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DomainLayer.Enums;
+using MediatR;  
 
 namespace ApplicationLayer.Commands.WorkoutPlans
-{
-    internal class CreateWorkoutPlanCommandHandler
-    {
-    }
+{ 
+    public record CreateWorkoutPlanCommand(
+         string MemberId, PlanType PlanType, DateTime StartDate, int DurationInDays
+    ) : IRequest<bool>;
 }

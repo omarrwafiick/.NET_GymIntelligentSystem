@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR; 
 
 namespace ApplicationLayer.Commands.WorkoutPlans
-{
-    internal class AddWorkoutSessionCommandHandler
-    {
-    }
+{ 
+    public record AddWorkoutSessionCommand(
+         string WorkoutPlanId, DateTime ScheduledDate, string Notes
+    ) : IRequest<bool>;
 }

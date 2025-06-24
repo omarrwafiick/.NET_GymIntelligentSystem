@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Contracts;
+using ApplicationLayer.Dtos.Members;
+using ApplicationLayer.Queries.Members;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handlers.Members
 {
-    internal class GetWorkoutLogsQueryHandler
+    public class GetWorkoutLogsQueryHandler : IRequestHandler<GetWorkoutLogsQuery, List<GetWorkoutLogsDto>>
     {
+        private readonly IApplicationRepository<WorkoutLog> _repository;
+
+        public GetWorkoutLogsQueryHandler(IApplicationRepository<WorkoutLog> repository)
+        {
+            _repository = repository;
+        }
+    
+        public Task<List<GetWorkoutLogsDto>> Handle(GetWorkoutLogsQuery request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

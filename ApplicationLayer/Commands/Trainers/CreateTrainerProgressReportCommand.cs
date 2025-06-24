@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR; 
 
 namespace ApplicationLayer.Commands.Trainers
-{
-    internal class CreateTrainerProgressReportCommand
-    {
-    }
+{ 
+    public record CreateTrainerProgressReportCommand(
+         string MemberId, float WeightKg, float BodyFatPercentage,
+         float MuscleMass, string TrainerNotes
+    ) : IRequest<bool>;
 }

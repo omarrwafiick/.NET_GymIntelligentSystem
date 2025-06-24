@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using System.ComponentModel.DataAnnotations; 
 
 namespace ApplicationLayer.Dtos.Authenticartion
 {
-    public record LoginDto(); 
+    public record LoginDto([EmailAddress] string Email, [Required] string Password); 
+    public record GetUserInfoDto(string Email, string Username, string Fullname);
 }

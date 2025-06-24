@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Commands.Subscriptions;
+using ApplicationLayer.Contracts;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handler.Subscriptions
 {
-    internal class SubscriptionPurchaseCommandHandler
+    public class SubscriptionPurchaseCommandHandler : IRequestHandler<SubscriptionPurchaseCommand, bool>
     {
+        private readonly IApplicationRepository<Subscription> _repository;
+
+        public SubscriptionPurchaseCommandHandler(IApplicationRepository<Subscription> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<bool> Handle(SubscriptionPurchaseCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

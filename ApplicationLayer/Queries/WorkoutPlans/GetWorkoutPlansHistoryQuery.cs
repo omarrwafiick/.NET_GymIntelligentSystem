@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Dtos.Trainers;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.WorkoutPlans
-{
-    internal class GetWorkoutPlansHistoryQueryHandler
-    {
-    }
+{ 
+    public record GetWorkoutPlansHistoryQuery(string MemberId) : IRequest<List<GetWorkoutPlansDto>>;
 }

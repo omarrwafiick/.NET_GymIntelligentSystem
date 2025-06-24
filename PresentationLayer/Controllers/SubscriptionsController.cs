@@ -23,14 +23,14 @@ namespace PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpPost("cancel/{subscriberid}")]
-        public async Task<IActionResult> CancelSubscription([FromRoute] string subscriberid, [FromBody] CancelSubscriptionDto dto)
+        [HttpPost("cancel/{subscribtionid}")]
+        public async Task<IActionResult> CancelSubscription([FromRoute] string subscribtionid)
         {
             return Ok();
         }
 
-        [HttpPost("upgrade/{subscriberid}")]
-        public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscriberid, [FromBody] UpgradeSubscriptionDto dto)
+        [HttpPost("upgrade/{subscribtionid}")]
+        public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscribtionid)
         {
             return Ok();
         }

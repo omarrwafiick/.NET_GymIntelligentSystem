@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Dtos.Trainers;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Reports
-{
-    internal class GetTrainerWorkloadReportQueryHandlers
-    {
-    }
+{ 
+    public record GetTrainerWorkloadReportQuery(string TrainerId) : IRequest<GetTrainerWorkloadReportDto>;
 }

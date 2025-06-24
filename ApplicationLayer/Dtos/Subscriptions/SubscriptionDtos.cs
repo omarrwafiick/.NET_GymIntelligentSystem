@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using DomainLayer.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationLayer.Dtos.Subscriptions
-{
-    public record CancelSubscriptionDto();
-    public record PurchaseSubscriptionDto();
-    public record UpgradeSubscriptionDto();
+{ 
+    public record PurchaseSubscriptionDto(
+        [Required] string MemberId, [Required] PlanType PlanType, [Required] DateTime StartDate,
+        [Required] int DurationInDays, [Required] decimal Amount);
+    
+    public record GetSubscriptionDto(
+        string MemberId, PlanType PlanType,DateTime StartDate, DateTime EndDate, int DurationInDays, decimal Amount);
+     
+    public record GetPaymentHistoryDto(
+            decimal Amount, CurrencyType Currency, PaymentMethod PaymentMethod,
+            string TransactionId, DateTime PaidAt, string Description);
 }

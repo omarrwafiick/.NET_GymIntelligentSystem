@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationLayer.Dtos.Members;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Reports
-{
-    internal class GetRevenueReportQueryHandlers
-    {
-    }
+{ 
+    public record GetRevenueReportQuery(string MemberId) : IRequest<GetRevenueReportDto>;
 }

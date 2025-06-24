@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationLayer.Dtos.Authenticartion; 
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Authenticartion
-{
-    internal class GetInfoQuery
-    {
-    }
+{ 
+    public record GetInfoQuery(string UserId) : IRequest<GetUserInfoDto>;
 }

@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using ApplicationLayer.Commands.Profiles;
+using ApplicationLayer.Contracts;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handlers.Profiles
 {
-    internal class ChangePasswordCommandHandler
+    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, bool>
     {
+        private readonly IApplicationRepository<User> _repository;
+
+        public ChangePasswordCommandHandler(IApplicationRepository<User> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<bool> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

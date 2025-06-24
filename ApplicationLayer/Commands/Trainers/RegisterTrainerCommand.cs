@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DomainLayer.Enums;
+using MediatR; 
 
 namespace ApplicationLayer.Commands.Trainers
-{
-    internal class RegisterTrainerCommandHandler
-    {
-    }
+{ 
+    public record RegisterTrainerCommand(
+         string FullName, string Username, string Email, string Password, Speciality Specialty
+    ) : IRequest<Guid>;
 }

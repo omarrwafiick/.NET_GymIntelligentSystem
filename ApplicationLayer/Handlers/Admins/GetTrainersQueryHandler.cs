@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationLayer.Contracts; 
+using ApplicationLayer.Dtos.Trainers;
+using ApplicationLayer.Queries.Admins;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handlers.Admins
 {
-    internal class GetTrainersQueryHandler
+    public class GetTrainersQueryHandler : IRequestHandler<GetTrainersQuery, List<GetTrainerDto>>
     {
+        private readonly IApplicationRepository<Trainer> _repository;
+
+        public GetTrainersQueryHandler(IApplicationRepository<Trainer> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<List<GetTrainerDto>> Handle(GetTrainersQuery request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

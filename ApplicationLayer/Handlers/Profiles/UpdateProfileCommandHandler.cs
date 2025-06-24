@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Commands.Profiles;
+using ApplicationLayer.Contracts;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handlers.Profiles
 {
-    internal class UpdateProfileCommandHandler
+    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, bool>
     {
+        private readonly IApplicationRepository<User> _repository;
+
+        public UpdateProfileCommandHandler(IApplicationRepository<User> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<bool> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

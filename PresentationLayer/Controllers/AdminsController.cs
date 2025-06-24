@@ -26,8 +26,8 @@ namespace PresentationLayer.Controllers
         }
 
 
-        [HttpPost("permission/{adminid}")]
-        public async Task<IActionResult> AddPermission([FromRoute] string adminid, [FromBody] AddPermissionDto dto)
+        [HttpPost("permission/{adminid}/{permissionid}")]
+        public async Task<IActionResult> AddPermission([FromRoute] string adminid, [FromRoute] string permissionid)
         {
             return Ok();
         }

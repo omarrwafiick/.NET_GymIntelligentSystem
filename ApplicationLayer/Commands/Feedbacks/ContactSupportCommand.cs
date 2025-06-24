@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR; 
 
 namespace ApplicationLayer.Commands.Feedbacks
-{
-    internal class ContactSupportCommand
-    {
-    }
+{ 
+    public record ContactSupportCommand(string Message, string Subject, string UserId) : IRequest<bool>;
 }

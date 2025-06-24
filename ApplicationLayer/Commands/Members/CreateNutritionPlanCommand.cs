@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using MediatR;
 
 namespace ApplicationLayer.Commands.Members
 {
-    internal class CreateNutritionPlanCommand
-    {
-    }
+    public record CreateNutritionPlanCommand(
+        string MemberId, int CaloriesPerDay, float ProteinGrams,
+        float CarbsGrams, float FatsGrams, string PlanNotes
+    ) : IRequest<bool>;
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Dtos.Recommendations;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Recommendations
-{
-    internal class GenerateSmartWorkoutPlanQuery
-    {
-    }
+{ 
+    public record GenerateSmartWorkoutPlanQuery(string MemberId) : IRequest<SmartWorkoutPlanDto>;
+
 }

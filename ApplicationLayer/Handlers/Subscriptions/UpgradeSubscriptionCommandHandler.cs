@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using ApplicationLayer.Commands.Subscriptions;
+using ApplicationLayer.Contracts;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handler.Subscriptions
 {
-    internal class UpgradeSubscriptionCommandHandler
+    public class UpgradeSubscriptionCommandHandler : IRequestHandler<UpgradeSubscriptionCommand, bool>
     {
+        private readonly IApplicationRepository<Subscription> _repository;
+
+        public UpgradeSubscriptionCommandHandler(IApplicationRepository<Subscription> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<bool> Handle(UpgradeSubscriptionCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

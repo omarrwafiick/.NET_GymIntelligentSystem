@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using MediatR;
 
 namespace ApplicationLayer.Commands.Trainers
-{
-    internal class AssignTrainerToMemberCommandHandler
-    {
-    }
+{ 
+    public record AssignTrainerToMemberCommand(
+        string MemberId, string TrainerId
+    ) : IRequest<bool>;
 }

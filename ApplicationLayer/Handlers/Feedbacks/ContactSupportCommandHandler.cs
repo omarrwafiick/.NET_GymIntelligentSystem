@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using ApplicationLayer.Commands.Feedbacks;
+using ApplicationLayer.Contracts;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handlers.Feedbacks
 {
-    internal class ContactSupportCommandHandler
+    public class ContactSupportCommandHandler : IRequestHandler<ContactSupportCommand, bool>
     {
+        private readonly IApplicationRepository<SupportMessage> _repository;
+
+        public ContactSupportCommandHandler(IApplicationRepository<SupportMessage> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<bool> Handle(ContactSupportCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

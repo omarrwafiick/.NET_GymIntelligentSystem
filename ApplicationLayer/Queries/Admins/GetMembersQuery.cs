@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ using ApplicationLayer.Dtos.Members;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Admins
-{
-    internal class GetMembersQuery
-    {
-    }
+{ 
+    public record GetMembersQuery() : IRequest<List<GetMemeberDto>>;
 }

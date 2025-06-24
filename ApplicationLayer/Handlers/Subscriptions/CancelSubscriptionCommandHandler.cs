@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using ApplicationLayer.Commands.Subscriptions;
+using ApplicationLayer.Contracts; 
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handler.Subscriptions
 {
-    internal class CancelSubscriptionCommandHandler
+    public class CancelSubscriptionCommandHandler : IRequestHandler<CancelSubscriptionCommand, bool>
     {
+        private readonly IApplicationRepository<Subscription> _repository;
+
+        public CancelSubscriptionCommandHandler(IApplicationRepository<Subscription> repository)
+        {
+            _repository = repository;
+        } 
+        public Task<bool> Handle(CancelSubscriptionCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

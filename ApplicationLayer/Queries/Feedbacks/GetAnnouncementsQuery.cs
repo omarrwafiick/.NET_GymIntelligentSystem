@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Dtos.Feedbacks;
+using MediatR; 
 
 namespace ApplicationLayer.Queries.Feedbacks
-{
-    internal class GetAnnouncementsQuery
-    {
-    }
+{ 
+    public record GetAnnouncementsQuery(string UserId) : IRequest<List<GetAnnouncementDto>>;
 }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using MediatR; 
 namespace ApplicationLayer.Commands.Profiles
-{
-    internal class ChangePasswordCommand
-    {
-    }
+{ 
+    public record ChangePasswordCommand(
+        string Email, string Password
+    ) : IRequest<bool>;
 }

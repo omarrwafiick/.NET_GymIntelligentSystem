@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
+using System.ComponentModel.DataAnnotations; 
 
 namespace ApplicationLayer.Dtos.Profiles
 {
-    public record ChangePasswordDto();
-    public record UpdateProfileDtos();
+    public record ChangePasswordDto([Required] string Email, [Required] string Password);
+    public record UpdateProfileDtos([Required] string Fullname, [Required] string Username);
 }

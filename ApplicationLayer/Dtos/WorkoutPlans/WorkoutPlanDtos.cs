@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using DomainLayer.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationLayer.Dtos.WorkoutPlans
 {
-    public record AddWorkoutSessionDto();
-    public record CreateWorkoutPlanDto();
-    public record ReactivateWorkoutPlanDto();
+    public record AddWorkoutSessionDto(
+        [Required] string WorkoutPlanId, [Required] DateTime ScheduledDate, [Required] string Notes);
+    public record CreateWorkoutPlanDto(
+            [Required] string MemberId, [Required] PlanType PlanType,
+            [Required] DateTime StartDate, [Required] int DurationInDays); 
 
 }

@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ApplicationLayer.Contracts;
+using ApplicationLayer.Dtos.Subscriptions;
+using ApplicationLayer.Queries.Subscriptions;
+using DomainLayer.Entities;
+using MediatR;
 
 namespace ApplicationLayer.Handler.Subscriptions
 {
-    internal class GetPaymentHistoryQueryHandler
+    public class GetPaymentHistoryQueryHandler : IRequestHandler<GetPaymentHistoryQuery, List<GetPaymentHistoryDto>>
     {
+        private readonly IApplicationRepository<PaymentHistory> _repository;
+
+        public GetPaymentHistoryQueryHandler(IApplicationRepository<PaymentHistory> repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<List<GetPaymentHistoryDto>> Handle(GetPaymentHistoryQuery request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

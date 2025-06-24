@@ -1,5 +1,4 @@
-﻿using ApplicationLayer.Dtos.Members;
-using ApplicationLayer.Dtos.Trainers;
+﻿using ApplicationLayer.Dtos.Trainers;
 using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 

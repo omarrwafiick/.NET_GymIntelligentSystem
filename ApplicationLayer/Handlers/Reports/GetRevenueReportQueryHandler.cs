@@ -1,21 +1,21 @@
 ﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Members;  
+using ApplicationLayer.Dtos.Members;
 using ApplicationLayer.Queries.Reports;
 using DomainLayer.Entities;
 using MediatR;
 
 namespace ApplicationLayer.Handlers.Reports
 {
-    public class GetMembeStatsReportQueryHandler : IRequestHandler<GetMembeStatsReportQuery, GetMembeStatsReportDto>
+    public class GetRevenueReportQueryHandler : IRequestHandler<GetRevenueReportQuery, GetRevenueReportDto>
     {
         private readonly IApplicationRepository<Member> _repository;
 
-        public GetMembeStatsReportQueryHandler(IApplicationRepository<Member> repository)
+        public GetRevenueReportQueryHandler(IApplicationRepository<Member> repository)
         {
             _repository = repository;
         }
-    
-        public Task<GetMembeStatsReportDto> Handle(GetMembeStatsReportQuery request, CancellationToken cancellationToken)
+
+        public Task<GetRevenueReportDto> Handle(GetRevenueReportQuery request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
