@@ -26,8 +26,38 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetById([FromRoute] string id)
         { 
+            return Ok();
+        }
+
+        [HttpPost("{userid}/workout")]
+        public async Task<IActionResult> CreateWorkoutLog()
+        {
+            return Ok();
+        }
+
+        [HttpGet("{userid}/workouts/log")]
+        public async Task<IActionResult> GetWorkoutLogs([FromRoute] string userid)
+        {
+            return Ok();
+        }
+
+        [HttpPost("{userid}/nutrition")]
+        public async Task<IActionResult> CreateNutritionPlan([FromRoute] string userid)
+        {
+            return Ok();
+        }
+
+        [HttpGet("{userid}/nutrition")]
+        public async Task<IActionResult> GetNutritionPlan([FromRoute] string userid)
+        {
+            return Ok();
+        }
+
+        [HttpGet("{userid}/progress")]
+        public async Task<IActionResult> GetProgressReport([FromRoute] string userid)
+        {
             return Ok();
         }
     }

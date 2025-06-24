@@ -9,7 +9,8 @@ namespace DomainLayer.Entities
             Username = username;
             Email = email;
             PasswordHash = passwordHash;
-        }  
+        }
+        public AdminPermission AdminPermission { get; private set; }
         public static Admin Factory(string fullName, string username, string email, string passwordHash)
             => new Admin(fullName, username, email, passwordHash);
 

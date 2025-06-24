@@ -19,12 +19,34 @@ namespace InfrastructureLayer.Data
         public DbSet<NutritionPlan> NutritionPlans { get; set; } 
         public DbSet<ProgressReport> ProgressReports { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
-
+        public DbSet<SupportMessage> SupportMessages { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<AdminPermission> AdminPermissions { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<PaymentHistory> PaymentHistory { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().UseTptMappingStrategy();
-
             base.OnModelCreating(modelBuilder);
+
+            #region Config
+            modelBuilder.Entity<User>().UseTptMappingStrategy();
+            modelBuilder.Entity<MemberTrainer>().HasKey(k => new { k.Id, k.MemberId, k.TrainerId });
+            modelBuilder.Entity<AdminPermission>().HasKey(k => new { k.Id, k.AdminId, k.PermissionId});
+            #endregion
+
+            #region Seeding
+            modelBuilder.Entity<Permission>().HasData(
+                [
+                    Permission.Factory("Read"),
+                    Permission.Factory("Delete"),
+                    Permission.Factory("Update"),
+                    Permission.Factory("Create"),
+                ]
+            );
+            #endregion
+            
         }
     }
 }

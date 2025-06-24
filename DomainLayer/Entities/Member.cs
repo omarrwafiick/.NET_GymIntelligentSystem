@@ -26,7 +26,8 @@ namespace DomainLayer.Entities
         public virtual ICollection<WorkoutLog> WorkoutLogs { get; set; } = new List<WorkoutLog>();
         public virtual ICollection<NutritionPlan> NutritionPlans { get; set; } = new List<NutritionPlan>();
         public virtual ICollection<WorkoutPlan> WorkoutPlans { get; set; } = new List<WorkoutPlan>();
-         
+        public virtual ICollection<PaymentHistory> PaymentHistory { get; set; } = new List<PaymentHistory>();
+
         public static Member Factory(
             string fullName, string username, string email, string passwordHash,
             float heightCm, float weightKg, Goal goal, DateTime dateOfBirth) 
