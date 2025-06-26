@@ -14,9 +14,11 @@ namespace ApplicationLayer.Handlers.Authenticartion
             _repository = repository;
         }
 
-        public Task<bool> Handle(VerifyUserCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(VerifyUserCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await _repository.GetAsync(u => u.Email == request.Email);
+
+            return user != null; 
         }
     }
 }

@@ -2,6 +2,7 @@
 using DomainLayer.Contracts;
 using InfrastructureLayer.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace InfrastructureLayer.Implementations.Repositories
 {
@@ -18,14 +19,16 @@ namespace InfrastructureLayer.Implementations.Repositories
         public async Task<T> GetAsync(Guid id)
             => await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
 
+        public async Task<T> GetAsync(Expression<Func<T, bool>> condtion)
+            => await _context.Set<T>().Where(condtion).SingleOrDefaultAsync();
+
         public async Task<bool> CreateAsync(T Entity)
         {
             await _context.AddAsync(Entity);
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
-
-
+         
         public async Task<bool> UpdateAsync(T Entity)
         {
             _context.Update(Entity);

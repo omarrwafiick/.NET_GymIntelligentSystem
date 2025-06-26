@@ -11,7 +11,8 @@ namespace DomainLayer.Entities
             Username = username;
             Email = email;
             PasswordHash = passwordHash;
-            Speciality = specialty;
+            Speciality = specialty; 
+            Role = Role.Trainer;
         }
         public Speciality Speciality { get; private set; }
         public virtual ICollection<MemberTrainer> MemberAssignments { get; private set; } = new List<MemberTrainer>();

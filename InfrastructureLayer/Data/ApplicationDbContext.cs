@@ -1,4 +1,5 @@
-﻿using DomainLayer.Entities; 
+﻿using DomainLayer.Entities;
+using DomainLayer.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace InfrastructureLayer.Data
@@ -39,10 +40,10 @@ namespace InfrastructureLayer.Data
             #region Seeding
             modelBuilder.Entity<Permission>().HasData(
                 [
-                    Permission.Factory("Read"),
-                    Permission.Factory("Delete"),
-                    Permission.Factory("Update"),
-                    Permission.Factory("Create"),
+                    Permission.Factory(PermissionType.Read),
+                    Permission.Factory(PermissionType.Delete),
+                    Permission.Factory(PermissionType.Update),
+                    Permission.Factory(PermissionType.Create),
                 ]
             );
             #endregion

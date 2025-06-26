@@ -17,7 +17,8 @@ namespace DomainLayer.Entities
             HeightCm = heightCm;
             WeightKg = weightKg;
             Goal = goal;
-            DateOfBirth = dateOfBirth;
+            DateOfBirth = dateOfBirth; 
+            Role = Role.Member;
         }
         public float HeightCm { get; private set; }
         public float WeightKg { get; private set; }

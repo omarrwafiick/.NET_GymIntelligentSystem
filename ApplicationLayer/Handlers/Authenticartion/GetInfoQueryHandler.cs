@@ -15,9 +15,13 @@ namespace ApplicationLayer.Handlers.Authenticartion
             _repository = repository;
         }
 
-        public Task<GetUserInfoDto> Handle(GetInfoQuery request, CancellationToken cancellationToken)
+        public async Task<GetUserInfoDto> Handle(GetInfoQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Guid.TryParse(request.Id, out Guid id);
+
+            var user = await _repository.GetAsync(id);  
+
+            return user == null? null : new GetUserInfoDto(user.Email, user.Username, user.FullName);
         }
     }
 }

@@ -1,16 +1,18 @@
-﻿ 
+﻿
+using DomainLayer.Enums;
+
 namespace DomainLayer.Entities
 {
     public class Permission : MainEntity
     {
         private Permission(){}
-        private Permission(string permissionName)
+        private Permission(PermissionType permissionName)
         {
             PermissionName = permissionName; 
         }
-        public string PermissionName { get; private set; } 
+        public PermissionType PermissionName { get; private set; } 
         public virtual AdminPermission AdminPermission { get; private set; }
-        public static Permission Factory(string permissionName)
+        public static Permission Factory(PermissionType permissionName)
             => new Permission(permissionName);
     }
 }
