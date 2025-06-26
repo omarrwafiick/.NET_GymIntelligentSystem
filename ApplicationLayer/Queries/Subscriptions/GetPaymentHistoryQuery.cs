@@ -3,5 +3,5 @@ using MediatR;
 
 namespace ApplicationLayer.Queries.Subscriptions
 { 
-    public record GetPaymentHistoryQuery() : IRequest<List<GetPaymentHistoryDto>>;
+    public record GetPaymentHistoryQuery(string MemberId) : IRequest<List<GetPaymentHistoryDto>>;
 }

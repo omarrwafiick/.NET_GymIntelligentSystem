@@ -2,5 +2,5 @@
 using MediatR; 
 namespace ApplicationLayer.Queries.Members
 { 
-    public record GetNutritionPlanQuery(string MemberId) : IRequest<GetNutritionPlanDto>;
+    public record GetNutritionPlansQuery(string MemberId) : IRequest<List<GetNutritionPlanDto>>;
 }

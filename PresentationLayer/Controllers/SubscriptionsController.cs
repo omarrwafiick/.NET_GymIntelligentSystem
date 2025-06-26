@@ -1,5 +1,6 @@
-﻿using ApplicationLayer.Dtos.Members;
-using ApplicationLayer.Dtos.Subscriptions;
+﻿using ApplicationLayer.Commands.Subscriptions;
+using ApplicationLayer.Dtos.Subscriptions; 
+using ApplicationLayer.Queries.Subscriptions; 
 using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,38 +14,59 @@ namespace PresentationLayer.Controllers
 
         public SubscriptionsController(IMediator mediator)
         {
-            _mediator = mediator;
-
+            _mediator = mediator;  
         }
 
-        [HttpPost("purchase/{subscriberid}")]
-        public async Task<IActionResult> SubscriptionPurchase([FromRoute] string subscriberid, [FromBody] PurchaseSubscriptionDto dto)
+        [HttpPost("purchase/{memberid}")]
+        public async Task<IActionResult> SubscriptionPurchase([FromRoute] string memberid, [FromBody] PurchaseSubscriptionDto dto)
         {
-            return Ok();
+            var command = new SubscriptionPurchaseCommand(
+                memberid, dto.PlanType, dto.StartDate, dto.DurationInDays, dto.Amount    
+            );
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest("Subscription request couldn't be fulfilled at the moment") :
+                NoContent();
         }
 
         [HttpPost("cancel/{subscribtionid}")]
         public async Task<IActionResult> CancelSubscription([FromRoute] string subscribtionid)
         {
-            return Ok();
+            var command = new CancelSubscriptionCommand(subscribtionid);
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest("Subscription cancellation request couldn't be fulfilled at the moment") :
+                NoContent();
         }
 
         [HttpPost("upgrade/{subscribtionid}")]
         public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscribtionid)
         {
-            return Ok();
+            var command = new UpgradeSubscriptionCommand(subscribtionid);
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest("Subscription upgrade request couldn't be fulfilled at the moment") :
+                NoContent();
         }
 
-        [HttpGet("member/active/{subscriberid}")]
-        public async Task<IActionResult> GetActiveSubscriptions([FromRoute] string subscriberid)
+        [HttpGet("member/active/{memberid}")]
+        public async Task<IActionResult> GetActiveSubscriptions([FromRoute] string memberid)
         {
-            return Ok();
+            var command = new GetActiveSubscriptionsQuery(memberid);
+            var result = await _mediator.Send(command);
+            return !result.Any() ?
+                NotFound($"No active subscription was found for member with id : {memberid}") :
+                Ok(new { data = result });
         }
 
         [HttpGet("member/payment-history/{memberid}")]
         public async Task<IActionResult> GetPaymentHistory([FromRoute] string memberid)
         {
-            return Ok();
+            var command = new GetPaymentHistoryQuery(memberid);
+            var result = await _mediator.Send(command);
+            return !result.Any() ?
+                NotFound($"No payment history was found for member with id : {memberid}") :
+                Ok(new { data = result });
         }
     }
 }

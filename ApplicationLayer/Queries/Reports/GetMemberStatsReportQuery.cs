@@ -3,5 +3,5 @@ using MediatR;
 
 namespace ApplicationLayer.Queries.Reports
 { 
-    public record GetMembeStatsReportQuery(string MemberId) : IRequest<GetMembeStatsReportDto>;
+    public record GetMemberStatsReportQuery(string MemberId) : IRequest<GetMembeStatsReportDto>;
 }

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace ApplicationLayer.Queries.Authenticartion
 { 
-    public record GetInfoQuery(string UserId) : IRequest<GetUserInfoDto>;
+    public record GetInfoQuery(string Id) : IRequest<GetUserInfoDto>;
 }

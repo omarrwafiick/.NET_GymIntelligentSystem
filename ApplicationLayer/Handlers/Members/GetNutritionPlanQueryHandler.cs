@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ApplicationLayer.Handlers.Members
 {
-    public class GetNutritionPlanQueryHandler : IRequestHandler<GetNutritionPlanQuery, GetNutritionPlanDto>
+    public class GetNutritionPlanQueryHandler : IRequestHandler<GetNutritionPlansQuery, List<GetNutritionPlanDto>>
     {
         private readonly IApplicationRepository<NutritionPlan> _repository;
 
@@ -15,8 +15,8 @@ namespace ApplicationLayer.Handlers.Members
         {
             _repository = repository;
         }
-
-        public Task<GetNutritionPlanDto> Handle(GetNutritionPlanQuery request, CancellationToken cancellationToken)
+          
+        Task<List<GetNutritionPlanDto>> IRequestHandler<GetNutritionPlansQuery, List<GetNutritionPlanDto>>.Handle(GetNutritionPlansQuery request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

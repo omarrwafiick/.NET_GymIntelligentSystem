@@ -3,6 +3,6 @@
 namespace ApplicationLayer.Commands.Profiles
 { 
     public record UpdateProfileCommand(
-        string Username, string Fullname
+        string id, string Username, string Fullname
     ) : IRequest<bool>;
 }

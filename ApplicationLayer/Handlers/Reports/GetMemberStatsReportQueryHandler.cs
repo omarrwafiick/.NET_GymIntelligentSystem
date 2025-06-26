@@ -6,16 +6,16 @@ using MediatR;
 
 namespace ApplicationLayer.Handlers.Reports
 {
-    public class GetMembeStatsReportQueryHandler : IRequestHandler<GetMembeStatsReportQuery, GetMembeStatsReportDto>
+    public class GetMemberStatsReportQueryHandler : IRequestHandler<GetMemberStatsReportQuery, GetMembeStatsReportDto>
     {
         private readonly IApplicationRepository<Member> _repository;
 
-        public GetMembeStatsReportQueryHandler(IApplicationRepository<Member> repository)
+        public GetMemberStatsReportQueryHandler(IApplicationRepository<Member> repository)
         {
             _repository = repository;
         }
     
-        public Task<GetMembeStatsReportDto> Handle(GetMembeStatsReportQuery request, CancellationToken cancellationToken)
+        public Task<GetMembeStatsReportDto> Handle(GetMemberStatsReportQuery request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,6 @@
-﻿using ApplicationLayer.Dtos.Trainers;
+﻿using ApplicationLayer.Commands.Trainers;
+using ApplicationLayer.Dtos.Trainers;
+using ApplicationLayer.Queries.Trainers; 
 using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,38 +14,61 @@ namespace PresentationLayer.Controllers
 
         public TrainersController(IMediator mediator)
         {
-            _mediator = mediator;
-
+            _mediator = mediator; 
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterTrainerDto dto)
         {
-            return Ok();
+            var command = new RegisterTrainerCommand(
+                dto.FullName, dto.Username, dto.Email, dto.Password, dto.Specialty
+            );
+            var result = await _mediator.Send(command);
+            return result.ToString() is null ?
+                BadRequest("Trainer couldn't be created") :
+                Ok(new { resourceId = result });
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
-            return Ok();
+            var command = new GetTrainerByIdQuery(id);
+            var result = await _mediator.Send(command);
+            return result is null ?
+                NotFound($"No trainer was found using this id : {id}") :
+                Ok(new { data = result });
         }
 
         [HttpPost("assign/{trainerid}/{memberid}")]
         public async Task<IActionResult> AssignTrainerToMember([FromRoute] string trainerid, [FromRoute] string memberid)
         {
-            return Ok();
+            var command = new AssignTrainerToMemberCommand(memberid, trainerid);
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest($"Couldn't assign trainer with id : {trainerid} to member with id : {memberid}") :
+                NoContent();
         }
 
-        [HttpPost("progress/{trainerid}")]
-        public async Task<IActionResult> CreateProgressReport([FromRoute] string trainerid, [FromBody] CreateTrainerProgressReportDto dto)
+        [HttpPost("progress/{memberid}")]
+        public async Task<IActionResult> CreateProgressReport([FromRoute] string memberid, [FromBody] CreateTrainerProgressReportDto dto)
         {
-            return Ok();
+            var command = new CreateTrainerProgressReportCommand(
+                memberid, dto.WeightKg, dto.BodyFatPercentage, dto.MuscleMass, dto.TrainerNotes
+            );
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest("Progress report couldn't be created") :
+                NoContent();
         }
 
         [HttpGet("assigned/{trainerid}")]
         public async Task<IActionResult> GetAssignedMembers([FromRoute] string trainerid)
         {
-            return Ok();
+            var command = new GetAssignedMembersQuery(trainerid);
+            var result = await _mediator.Send(command);
+            return !result.Any() ?
+                BadRequest($"Trainer with id : {trainerid} is not assigned to any user") :
+                Ok(new { data = result });
         }
     }
 }

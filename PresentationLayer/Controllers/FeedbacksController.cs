@@ -1,5 +1,6 @@
-﻿using ApplicationLayer.Dtos.Admins;
+﻿using ApplicationLayer.Commands.Feedbacks; 
 using ApplicationLayer.Dtos.Feedbacks;
+using ApplicationLayer.Queries.Feedbacks; 
 using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,26 +18,42 @@ namespace PresentationLayer.Controllers
 
         [HttpPost("support/contact")]
         public async Task<IActionResult> ContactSupport([FromBody] ContactSupportDto dto)
-        {
-            return Ok();
+        { 
+            var command = new ContactSupportCommand(dto.Message, dto.Subject, dto.UserId);
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest("Something went wrong while contacting support") :
+                Ok("Message was sent successfully to support");
         }
 
         [HttpPost("announcement")]
         public async Task<IActionResult> CreateAnnouncement([FromBody] CreateAnnouncementDto dto)
         {
-            return Ok();
+            var command = new CreateAnnouncementCommand(dto.Title, dto.Message, dto.Audience);
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest("Something went wrong while creating an announcement") :
+                Ok("Announcement was created successfuly");
         }
 
-        [HttpGet("announcements")]
-        public async Task<IActionResult> GetAnnouncements()
+        [HttpGet("announcements/{userid}")]
+        public async Task<IActionResult> GetAnnouncements([FromRoute] string userid)
         {
-            return Ok();
+            var command = new GetAnnouncementsQuery(userid);
+            var result = await _mediator.Send(command);
+            return !result.Any() ?
+                NotFound("No Announcement was found") :
+                Ok(new { data = result });
         }
 
         [HttpPost("feedback")]
         public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackDto dto)
         {
-            return Ok();
+            var command = new CreateFeedbackCommand(dto.UserId, dto.Rating, dto.Comment, dto.TargetType, dto.TargetId);
+            var result = await _mediator.Send(command);
+            return !result ?
+                NotFound("Feedback couldn't be created") :
+                Ok("Feedback was created successfully");
         }
     }
 }

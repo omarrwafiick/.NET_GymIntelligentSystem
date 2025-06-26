@@ -1,4 +1,5 @@
-﻿using MediatR; 
+﻿using ApplicationLayer.Queries.Reports; 
+using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -12,26 +13,37 @@ namespace PresentationLayer.Controllers
 
         public ReportsController(IMediator mediator)
         {
-            _mediator = mediator;
-
+            _mediator = mediator; 
         }
 
-        [HttpGet("members")]
-        public async Task<IActionResult> GetMembeStats()
+        [HttpGet("member/{memberid}")]
+        public async Task<IActionResult> GetMemberStats([FromRoute] string memberid)
         {
-            return Ok();
+            var command = new GetMemberStatsReportQuery(memberid);
+            var result = await _mediator.Send(command);
+            return result is null ?
+                NotFound($"No stats was found for memeber with id : {memberid}") :
+                Ok(new { data = result });
         }
 
-        [HttpGet("revenue")]
-        public async Task<IActionResult> GetRevenueReport()
-        {
-            return Ok();
+        [HttpGet("revenue/{memberid}")]
+        public async Task<IActionResult> GetRevenueReport([FromRoute] string memberid)
+        { 
+            var command = new GetRevenueReportQuery(memberid);
+            var result = await _mediator.Send(command);
+            return result is null ?
+                NotFound($"No revenue report was found for memeber with id : {memberid}") :
+                Ok(new { data = result });
         }
 
-        [HttpGet("trainers")]
-        public async Task<IActionResult> GetTrainerWorkload()
+        [HttpGet("trainers/{trainerid}")]
+        public async Task<IActionResult> GetTrainerWorkload([FromRoute] string trainerid)
         {
-            return Ok();
+            var command = new GetTrainerWorkloadReportQuery(trainerid);
+            var result = await _mediator.Send(command);
+            return result is null ?
+                NotFound($"No work load was found for trainer with id : {trainerid}") :
+                Ok(new { data = result });
         }
     }
 }

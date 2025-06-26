@@ -1,9 +1,9 @@
 ﻿ 
-using ApplicationLayer.Dtos.Subscriptions;
+using ApplicationLayer.Dtos.Subscriptions; 
 using MediatR; 
 
 namespace ApplicationLayer.Queries.Subscriptions
 { 
-    public record GetActiveSubscriptionsQuery() : IRequest<List<GetSubscriptionDto>>;
+    public record GetActiveSubscriptionsQuery(string MemberId) : IRequest<List<GetSubscriptionDto>>;
 
 }
