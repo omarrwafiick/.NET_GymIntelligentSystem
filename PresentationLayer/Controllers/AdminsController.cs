@@ -28,8 +28,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
-            var command = new GetAdminByIdQuery(id);
-            var result = await _mediator.Send(command);
+            var query = new GetAdminByIdQuery(id);
+            var result = await _mediator.Send(query);
             return result is null ?
                 NotFound($"No admin was found using this id {id}") :
                 Ok(new { data = result });
@@ -48,8 +48,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("permissions/{adminid}")]
         public async Task<IActionResult> GetPermissions([FromRoute] string adminid)
         {
-            var command = new GetPermissionsQuery(adminid);
-            var result = await _mediator.Send(command);
+            var query = new GetPermissionsQuery(adminid);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("No permission was found") :
                 Ok(new {data = result });
@@ -58,8 +58,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("members")]
         public async Task<IActionResult> GetMembers()
         {
-            var command = new GetMembersQuery();
-            var result = await _mediator.Send(command);
+            var query = new GetMembersQuery();
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("No member was found") :
                 Ok(new { data = result });
@@ -68,8 +68,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("trainers")]
         public async Task<IActionResult> GetTrainers()
         {
-            var command = new GetTrainersQuery();
-            var result = await _mediator.Send(command);
+            var query = new GetTrainersQuery();
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("No trainer was found") :
                 Ok(new { data = result });
@@ -78,8 +78,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("subscriptions")]
         public async Task<IActionResult> GetSubscriptions()
         {
-            var command = new GetSubscriptionsQuery();
-            var result = await _mediator.Send(command);
+            var query = new GetSubscriptionsQuery();
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("No subscription was found") :
                 Ok(new { data = result });

@@ -1,7 +1,6 @@
-﻿
-
-using ApplicationLayer.Commands.Profiles;
+﻿using ApplicationLayer.Commands.Profiles;
 using ApplicationLayer.Contracts;
+using ApplicationLayer.Helpers;
 using DomainLayer.Entities;
 using MediatR;
 
@@ -16,9 +15,15 @@ namespace ApplicationLayer.Handlers.Profiles
             _repository = repository;
         }
 
-        public Task<bool> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await _repository.GetAsync(u => u.Email == request.Email);
+            if (user == null) return false; 
+
+            var newHashedPassword = SecurityHelpers.HashPassword(request.Password);
+            user.ChangePassword(newHashedPassword);
+
+            return await _repository.UpdateAsync(user);
         }
     }
 }

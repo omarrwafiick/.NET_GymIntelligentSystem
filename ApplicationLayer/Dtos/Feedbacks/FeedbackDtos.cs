@@ -10,5 +10,6 @@ namespace ApplicationLayer.Dtos.Feedbacks
     );
     public record ContactSupportDto([Required] string Message, [Required] string Subject, [Required] string UserId);
     public record CreateAnnouncementDto([Required] string Title, [Required] string Message, [Required] AudienceType Audience);
-    public record GetAnnouncementDto(int Rating, string Comment, TargetType TargetType, string TargetId);
+    public record GetAnnouncementDto(string Title, string Message, DateTime SentAt);
+     
 }

@@ -16,9 +16,14 @@ namespace ApplicationLayer.Handlers.Admins
         }
  
 
-        Task<List<GetMemeberDto>> IRequestHandler<GetMembersQuery, List<GetMemeberDto>>.Handle(GetMembersQuery request, CancellationToken cancellationToken)
+        async Task<List<GetMemeberDto>> IRequestHandler<GetMembersQuery, List<GetMemeberDto>>.Handle(GetMembersQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var members = await _repository.GetAllAsync();
+            return members.Any() ? members.Select(
+                m => new GetMemeberDto(
+                    m.FullName, m.Username, m.Email, m.HeightCm,
+                    m.WeightKg, m.Goal, m.DateOfBirth)).ToList()
+            : [];
         }
     }
 } 

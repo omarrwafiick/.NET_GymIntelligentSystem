@@ -15,9 +15,12 @@ namespace ApplicationLayer.Handlers.Admins
             _repository = repository;
         }
 
-        public Task<List<GetPermissionDto>> Handle(GetPermissionsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetPermissionDto>> Handle(GetPermissionsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var permissions = await _repository.GetAllAsync();
+            return permissions.Any() ? permissions.Select(
+                p => new GetPermissionDto(p.Id, p.PermissionName.ToString())).ToList()
+            : [];
         }
     }
 }

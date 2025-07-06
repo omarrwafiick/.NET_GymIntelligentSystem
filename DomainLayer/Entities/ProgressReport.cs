@@ -17,7 +17,9 @@ namespace DomainLayer.Entities
             RecordedOn = DateTime.UtcNow;
         }
         public Guid MemberId { get; private set; }
-        public virtual Member Member { get; private set; } 
+        public virtual Member Member { get; private set; }
+        public Guid TrainerId { get; private set; }
+        public virtual Trainer Trainer { get; private set; }
         public DateTime RecordedOn { get; private set; }
         public float WeightKg { get; private set; }
         public float BodyFatPercentage { get; private set; }

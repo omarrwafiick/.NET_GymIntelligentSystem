@@ -20,7 +20,8 @@ namespace PresentationLayer.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var command = new LoginCommand(dto.Email, dto.Password);
-            var tokenResult = await _mediator.Send(command); 
+            var tokenResult = await _mediator.Send(command);
+            HttpContext.Response.Cookies.Append("token", tokenResult);
             return tokenResult is null ? 
                 NotFound("User password/email is incorrect") : 
                 Ok(new {token = tokenResult });

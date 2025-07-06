@@ -15,9 +15,12 @@ namespace ApplicationLayer.Handlers.Admins
             _repository = repository;
         }
 
-        public Task<List<GetTrainerDto>> Handle(GetTrainersQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetTrainerDto>> Handle(GetTrainersQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var trainers = await _repository.GetAllAsync();
+            return trainers.Any() ? trainers.Select(
+                t => new GetTrainerDto(t.FullName, t.Username, t.Email, t.Speciality)).ToList()
+            : [];
         }
     }
 }

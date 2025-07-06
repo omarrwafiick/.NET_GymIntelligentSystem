@@ -52,8 +52,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("member/active/{memberid}")]
         public async Task<IActionResult> GetActiveSubscriptions([FromRoute] string memberid)
         {
-            var command = new GetActiveSubscriptionsQuery(memberid);
-            var result = await _mediator.Send(command);
+            var query = new GetActiveSubscriptionsQuery(memberid);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound($"No active subscription was found for member with id : {memberid}") :
                 Ok(new { data = result });
@@ -62,8 +62,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("member/payment-history/{memberid}")]
         public async Task<IActionResult> GetPaymentHistory([FromRoute] string memberid)
         {
-            var command = new GetPaymentHistoryQuery(memberid);
-            var result = await _mediator.Send(command);
+            var query = new GetPaymentHistoryQuery(memberid);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound($"No payment history was found for member with id : {memberid}") :
                 Ok(new { data = result });

@@ -19,8 +19,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("recommendation/workout-plan/{memberId}")]
         public async Task<IActionResult> GenerateSmartWorkoutPlan([FromRoute] string memberId)
         {
-            var command = new GenerateSmartWorkoutPlanQuery(memberId);
-            var result = await _mediator.Send(command);
+            var query = new GenerateSmartWorkoutPlanQuery(memberId);
+            var result = await _mediator.Send(query);
             return result is null ?
                 BadRequest($"Generation of a smart workout plan couldn't be created to member with id : {memberId}") :
                 Ok(new { data = result });
@@ -29,8 +29,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("recommendation/nutrition-plan/{memberId}")]
         public async Task<IActionResult> GenerateSmartNutritionPlan([FromRoute] string memberId)
         {
-            var command = new GenerateSmartNutritionPlanQuery(memberId);
-            var result = await _mediator.Send(command);
+            var query = new GenerateSmartNutritionPlanQuery(memberId);
+            var result = await _mediator.Send(query);
             return result is null ?
                 BadRequest($"Generation of a smart nutrition plan couldn't be created to member with id : {memberId}") :
                 Ok(new { data = result });

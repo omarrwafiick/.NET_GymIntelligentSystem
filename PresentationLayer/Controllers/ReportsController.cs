@@ -19,8 +19,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("member/{memberid}")]
         public async Task<IActionResult> GetMemberStats([FromRoute] string memberid)
         {
-            var command = new GetMemberStatsReportQuery(memberid);
-            var result = await _mediator.Send(command);
+            var query = new GetMemberStatsReportQuery(memberid);
+            var result = await _mediator.Send(query);
             return result is null ?
                 NotFound($"No stats was found for memeber with id : {memberid}") :
                 Ok(new { data = result });
@@ -29,8 +29,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("revenue/{memberid}")]
         public async Task<IActionResult> GetRevenueReport([FromRoute] string memberid)
         { 
-            var command = new GetRevenueReportQuery(memberid);
-            var result = await _mediator.Send(command);
+            var query = new GetRevenueReportQuery(memberid);
+            var result = await _mediator.Send(query);
             return result is null ?
                 NotFound($"No revenue report was found for memeber with id : {memberid}") :
                 Ok(new { data = result });
@@ -39,8 +39,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("trainers/{trainerid}")]
         public async Task<IActionResult> GetTrainerWorkload([FromRoute] string trainerid)
         {
-            var command = new GetTrainerWorkloadReportQuery(trainerid);
-            var result = await _mediator.Send(command);
+            var query = new GetTrainerWorkloadReportQuery(trainerid);
+            var result = await _mediator.Send(query);
             return result is null ?
                 NotFound($"No work load was found for trainer with id : {trainerid}") :
                 Ok(new { data = result });

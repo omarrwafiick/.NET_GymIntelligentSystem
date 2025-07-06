@@ -32,8 +32,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
-            var command = new GetTrainerByIdQuery(id);
-            var result = await _mediator.Send(command);
+            var query = new GetTrainerByIdQuery(id);
+            var result = await _mediator.Send(query);
             return result is null ?
                 NotFound($"No trainer was found using this id : {id}") :
                 Ok(new { data = result });
@@ -64,8 +64,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("assigned/{trainerid}")]
         public async Task<IActionResult> GetAssignedMembers([FromRoute] string trainerid)
         {
-            var command = new GetAssignedMembersQuery(trainerid);
-            var result = await _mediator.Send(command);
+            var query = new GetAssignedMembersQuery(trainerid);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 BadRequest($"Trainer with id : {trainerid} is not assigned to any user") :
                 Ok(new { data = result });

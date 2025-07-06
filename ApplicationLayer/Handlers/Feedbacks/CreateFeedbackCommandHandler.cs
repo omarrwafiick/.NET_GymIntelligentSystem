@@ -14,9 +14,16 @@ namespace ApplicationLayer.Handlers.Feedbacks
             _repository = repository;
         }
 
-        public Task<bool> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Guid.TryParse(request.UserId, out Guid userId);
+            Guid.TryParse(request.TargetId, out Guid targetId);
+
+            if (userId.ToString() is null || targetId.ToString() is null) return false;
+
+            var feedback = Feedback.Factory(userId, request.Rating, request.Comment, request.TargetType, targetId);
+
+            return await _repository.CreateAsync(feedback);
         }
     }
 }

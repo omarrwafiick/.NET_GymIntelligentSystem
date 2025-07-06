@@ -35,9 +35,9 @@ namespace PresentationLayer.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
-            var command = new GetMemberByIdQuery(id);
+            var query = new GetMemberByIdQuery(id);
 
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(query);
 
             return result is null ?
                 NotFound($"No member was found using this id : {id}") :
@@ -61,9 +61,9 @@ namespace PresentationLayer.Controllers
         [HttpGet("{userid}/workout/logs")]
         public async Task<IActionResult> GetWorkoutLogs([FromRoute] string userid)
         {
-            var command = new GetWorkoutLogsQuery(userid);
+            var query = new GetWorkoutLogsQuery(userid);
 
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(query);
 
             return !result.Any() ?
                 NotFound("No workout log was found") :
@@ -87,9 +87,9 @@ namespace PresentationLayer.Controllers
         [HttpGet("{memberid}/nutrition")]
         public async Task<IActionResult> GetNutritionPlans([FromRoute] string memberid)
         {
-            var command = new GetNutritionPlansQuery(memberid);
+            var query = new GetNutritionPlansQuery(memberid);
 
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(query);
 
             return !result.Any() ?
                 NotFound($"No nutrition plan was found for member with id : {memberid}") :
@@ -99,9 +99,9 @@ namespace PresentationLayer.Controllers
         [HttpGet("{memberid}/progress")]
         public async Task<IActionResult> GetProgressReport([FromRoute] string memberid)
         {
-            var command = new GetMemberProgressReportQuery(memberid);
+            var query = new GetMemberProgressReportQuery(memberid);
 
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(query);
 
             return result is null ?
                 NotFound($"No progress report was found for member with id : {memberid}") :

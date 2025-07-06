@@ -2,7 +2,7 @@
 using ApplicationLayer.Contracts;
 using DomainLayer.Entities;
 using MediatR;
-
+ 
 namespace ApplicationLayer.Handlers.Feedbacks
 {
     public class CreateAnnouncementCommandHandler : IRequestHandler<CreateAnnouncementCommand, bool>
@@ -14,9 +14,11 @@ namespace ApplicationLayer.Handlers.Feedbacks
             _repository = repository;
         }
 
-        public Task<bool> Handle(CreateAnnouncementCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(CreateAnnouncementCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var announcement = Announcement.Factory(request.Title, request.Message, request.Audience);
+
+            return await _repository.CreateAsync(announcement);
         }
     }
 }

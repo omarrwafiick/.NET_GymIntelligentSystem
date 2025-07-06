@@ -36,11 +36,11 @@ namespace PresentationLayer.Controllers
                 Ok("Announcement was created successfuly");
         }
 
-        [HttpGet("announcements/{userid}")]
-        public async Task<IActionResult> GetAnnouncements([FromRoute] string userid)
+        [HttpGet("announcements/{userid}/{audience}")]
+        public async Task<IActionResult> GetAnnouncements([FromRoute] string userid, [FromRoute] string audience)
         {
-            var command = new GetAnnouncementsQuery(userid);
-            var result = await _mediator.Send(command);
+            var query = new GetAnnouncementsQuery(userid, audience);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("No Announcement was found") :
                 Ok(new { data = result });

@@ -14,9 +14,12 @@ namespace ApplicationLayer.Dtos.Trainers
     public record GetTrainerDto(
         string FullName,string Username, string Email, Speciality Specialty);
 
-    public record GetTrainerWorkloadReportDto(
-        Guid MemberId, ExerciseType ExerciseType, int Sets, 
-        int Reps, float WeightKg, string Notes);
+    public record GetTrainerWorkloadReportDto(  
+        int TotalAssignedMembers,
+        int ActiveWorkoutPlans,
+        int SessionsThisMonth,
+        int ProgressReportsSubmitted
+    );
 
     public record GetWorkoutPlansDto(PlanType PlanType, DateTime StartDate, DateTime EndDate); 
     public record GetWorkoutSessionDto(Guid WorkoutPlanId, DateTime ScheduledDate, string Notes);

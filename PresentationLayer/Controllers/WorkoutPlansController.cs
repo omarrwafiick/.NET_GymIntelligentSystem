@@ -32,8 +32,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("member/{memberid}")]
         public async Task<IActionResult> GetWorkoutPlans([FromRoute] string memberid)
         {
-            var command = new GetWorkoutPlansQuery(memberid);
-            var result = await _mediator.Send(command);
+            var query = new GetWorkoutPlansQuery(memberid);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("Workout plan couldn't be created") :
                 Ok(new {data = result});
@@ -54,8 +54,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("{memberid}/sessions")]
         public async Task<IActionResult> GetWorkoutSession([FromRoute] string memberid)
         {
-            var command = new GetWorkoutSessionsQuery(memberid);
-            var result = await _mediator.Send(command);
+            var query = new GetWorkoutSessionsQuery(memberid);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("No workout session was found") :
                 Ok(new { data = result });
@@ -64,8 +64,8 @@ namespace PresentationLayer.Controllers
         [HttpGet("{memberid}/history")]
         public async Task<IActionResult> GetWorkoutPlansHistory([FromRoute] string memberid)
         {
-            var command = new GetWorkoutPlansHistoryQuery(memberid);
-            var result = await _mediator.Send(command);
+            var query = new GetWorkoutPlansHistoryQuery(memberid);
+            var result = await _mediator.Send(query);
             return !result.Any() ?
                 NotFound("No workout plan was found") :
                 Ok(new { data = result });

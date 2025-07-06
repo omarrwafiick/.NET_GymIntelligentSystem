@@ -16,6 +16,9 @@ namespace InfrastructureLayer.Implementations.Repositories
         public async Task<List<T>> GetAllAsync()
             => await _context.Set<T>().ToListAsync();
 
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> condtion)
+            => await _context.Set<T>().Where(condtion).ToListAsync();
+
         public async Task<T> GetAsync(Guid id)
             => await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
 

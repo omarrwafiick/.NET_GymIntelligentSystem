@@ -2,7 +2,7 @@
 using ApplicationLayer.Dtos.Subscriptions;
 using ApplicationLayer.Queries.Admins;
 using DomainLayer.Entities;
-using MediatR;
+using MediatR; 
 
 namespace ApplicationLayer.Handlers.Admins
 {
@@ -15,9 +15,14 @@ namespace ApplicationLayer.Handlers.Admins
             _repository = repository;
         }
 
-        public Task<List<GetSubscriptionDto>> Handle(GetSubscriptionsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetSubscriptionDto>> Handle(GetSubscriptionsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var subscriptions = await _repository.GetAllAsync();
+            return subscriptions.Any() ? subscriptions.Select(
+                s => new GetSubscriptionDto(
+                    s.MemberId, s.PlanType, s.StartDate, s.EndDate, 
+                    (s.EndDate.Day - s.StartDate.Day), s.AmountPaid)).ToList()
+            : [];
         }
     }
 }

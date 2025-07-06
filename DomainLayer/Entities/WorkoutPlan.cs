@@ -15,7 +15,9 @@ namespace DomainLayer.Entities
             DurationInDays = durationInDays;
         }
         public Guid MemberId { get; private set; }
-        public virtual Member Member { get; private set; } 
+        public virtual Member Member { get; private set; }
+        public Guid TrainerId { get; private set; }
+        public virtual Trainer Trainer { get; private set; }
         public PlanType PlanType { get; private set; }
         public DateTime StartDate { get; private set; }
         public int DurationInDays { get; private set; }

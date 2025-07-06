@@ -15,9 +15,14 @@ namespace ApplicationLayer.Handlers.Feedbacks
             _repository = repository;
         }
 
-        public Task<bool> Handle(ContactSupportCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ContactSupportCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Guid.TryParse(request.UserId, out Guid userId);
+            if (userId.ToString() is null) return false;
+
+            var contactMessage = SupportMessage.Factory(request.Message, request.Subject, userId);
+
+            return await _repository.CreateAsync(contactMessage);
         }
     }
 }

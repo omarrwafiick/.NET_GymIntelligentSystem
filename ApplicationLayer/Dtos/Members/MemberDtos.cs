@@ -30,19 +30,22 @@ namespace ApplicationLayer.Dtos.Members
 
     public record GetMembeStatsReportDto
     (
-         int TotalMembers,
-         int ActiveMembers,
-         int InactiveMembers,
-         int NewSignupsThisMonth,
-         int MembersWithTrainers,
-         int MembersWithoutPlans 
+        string FullName,
+        float CurrentWeightKg,
+        float StartingWeightKg,
+        float BodyFatPercentage,
+        float MuscleMass,
+        int TotalWorkouts,
+        int WorkoutDaysThisMonth,
+        DateTime? LastWorkoutDate,
+        int TotalNutritionPlans,
+        Goal Goal
     );
 
     public record GetRevenueReportDto(
         decimal TotalRevenue,
          int TotalSubscriptions,
-         int ActiveSubscriptions,
-         decimal MonthlyRecurringRevenue,
+         int ActiveSubscriptions, 
          decimal LastMonthRevenue,
          int CanceledSubscriptionsThisMonth
     );

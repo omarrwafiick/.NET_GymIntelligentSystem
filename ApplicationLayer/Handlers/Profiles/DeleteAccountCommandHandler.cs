@@ -14,9 +14,16 @@ namespace ApplicationLayer.Handlers.Profiles
             _repository = repository;
         }
 
-        public Task<bool> Handle(DeleteAccountCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteAccountCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Guid.TryParse(request.AccountId, out Guid userId);
+
+            if (userId.ToString() is null) return false;
+
+            var user = await _repository.GetAsync(u => u.Id == userId);
+            if (user == null) return false;
+
+            return await _repository.DeleteAsync(user);
         }
     }
 }

@@ -8,16 +8,52 @@ namespace ApplicationLayer.Handlers.Reports
 {
     public class GetMemberStatsReportQueryHandler : IRequestHandler<GetMemberStatsReportQuery, GetMembeStatsReportDto>
     {
-        private readonly IApplicationRepository<Member> _repository;
+        private readonly IApplicationRepository<Member> _memberRepository; 
 
-        public GetMemberStatsReportQueryHandler(IApplicationRepository<Member> repository)
+        public GetMemberStatsReportQueryHandler(
+            IApplicationRepository<Member> memberRepository)
         {
-            _repository = repository;
+            _memberRepository = memberRepository; 
         }
     
-        public Task<GetMembeStatsReportDto> Handle(GetMemberStatsReportQuery request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+        public async Task<GetMembeStatsReportDto> Handle(GetMemberStatsReportQuery request, CancellationToken cancellationToken)
+        { 
+            Guid.TryParse(request.MemberId, out Guid memberId);
+
+            if (memberId.ToString() is null) return null;
+
+            var member = await _memberRepository.GetAsync(memberId);
+
+            if (member is null) return null;
+
+            var workoutLogs = member.WorkoutLogs.ToList();
+            var nutritionPlans = member.NutritionPlans.ToList();
+            var lastprogressReport = member.ProgressReports.ToList()[0];
+            var lastLog = workoutLogs[member.WorkoutLogs.Count() - 1];
+
+            var now = DateTime.UtcNow;
+            var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
+            var workoutDaysThisMonth = workoutLogs
+                .Where(w => w.PerformedOn >= firstDayOfMonth && w.PerformedOn <= now)
+                .Select(w => w.PerformedOn.Date)  
+                .Distinct()
+                .Count();
+             
+            return workoutLogs.Any() && nutritionPlans.Any() ? 
+                new GetMembeStatsReportDto(
+                    member.FullName,
+                    lastLog.WeightKg,
+                    workoutLogs[0].WeightKg,
+                    lastprogressReport?.MuscleMass?? 0,
+                    lastprogressReport?.BodyFatPercentage ?? 0,
+                    workoutLogs.Count(),
+                    workoutDaysThisMonth,
+                    lastLog.PerformedOn,
+                    nutritionPlans.Count(),
+                    member.Goal
+                )
+                :
+                null;
         }
     }
 }

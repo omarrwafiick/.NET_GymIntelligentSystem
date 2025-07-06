@@ -9,9 +9,9 @@ namespace ApplicationLayer.Dtos.Subscriptions
         [Required] int DurationInDays, [Required] decimal Amount);
     
     public record GetSubscriptionDto(
-        string MemberId, PlanType PlanType,DateTime StartDate, DateTime EndDate, int DurationInDays, decimal Amount);
+        Guid MemberId, PlanType PlanType,DateTime StartDate, DateTime EndDate, int DurationInDays, decimal Amount);
      
     public record GetPaymentHistoryDto(
             decimal Amount, CurrencyType Currency, PaymentMethod PaymentMethod,
-            string TransactionId, DateTime PaidAt, string Description);
+            Guid TransactionId, DateTime PaidAt, string Description);
 }

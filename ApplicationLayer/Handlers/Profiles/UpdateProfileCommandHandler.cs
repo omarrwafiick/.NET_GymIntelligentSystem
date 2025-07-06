@@ -15,9 +15,19 @@ namespace ApplicationLayer.Handlers.Profiles
             _repository = repository;
         }
 
-        public Task<bool> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Guid.TryParse(request.id, out Guid userId);
+
+            if (userId.ToString() is null) return false;
+
+            var user = await _repository.GetAsync(u => u.Id == userId);
+            if (user == null) return false;
+
+            user.ChangeUsername(request.Username);
+            user.ChangeName(request.Fullname);
+
+            return await _repository.UpdateAsync(user);
         }
     }
 }

@@ -3,7 +3,8 @@ using ApplicationLayer.Contracts;
 using ApplicationLayer.Dtos.Feedbacks;
 using ApplicationLayer.Queries.Feedbacks;
 using DomainLayer.Entities;
-using MediatR;
+using DomainLayer.Enums;
+using MediatR; 
 
 namespace ApplicationLayer.Handlers.Feedbacks
 {
@@ -16,9 +17,28 @@ namespace ApplicationLayer.Handlers.Feedbacks
             _repository = repository;
         }
 
-        public Task<List<GetAnnouncementDto>> Handle(GetAnnouncementsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetAnnouncementDto>> Handle(GetAnnouncementsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var type = request.AudienceType;
+            var announcements = new List<Announcement>();
+            switch (type)
+            {
+                case var a when a == AudienceType.Admins.ToString():
+                    announcements = await _repository.GetAllAsync(x=>x.AudienceType == AudienceType.Admins);
+                    break;
+                case var a when a == AudienceType.Trainers.ToString():
+                    announcements = await _repository.GetAllAsync(x => x.AudienceType == AudienceType.Trainers);
+                    break;
+                case var a when a == AudienceType.Members.ToString():
+                    announcements = await _repository.GetAllAsync(x => x.AudienceType == AudienceType.Members);
+                    break;
+                default:
+                    announcements = await _repository.GetAllAsync(x => x.AudienceType == AudienceType.All);
+                    break;
+            }
+            return announcements.Any() ?
+                announcements.Select(a => new GetAnnouncementDto(a.Title, a.Message, a.SentAt)).ToList()
+                : [];
         }
     }
 }
