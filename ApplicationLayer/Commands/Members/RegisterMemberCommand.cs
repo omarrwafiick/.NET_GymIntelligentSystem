@@ -12,6 +12,6 @@ namespace ApplicationLayer.Commands.Members
     float HeightCm,
     float WeightKg,
     Goal Goal,
-    DateTime DateOfBirth
+    DateOnly DateOfBirth
     ) : IRequest<Guid?>;
 }

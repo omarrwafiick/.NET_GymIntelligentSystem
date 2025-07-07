@@ -16,10 +16,8 @@ namespace ApplicationLayer.Handlers.Profiles
         }
 
         public async Task<bool> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
-        {
-            Guid.TryParse(request.id, out Guid userId);
-
-            if (userId.ToString() is null) return false;
+        { 
+            if (Guid.TryParse(request.id, out Guid userId)) return false;
 
             var user = await _repository.GetAsync(u => u.Id == userId);
             if (user == null) return false;

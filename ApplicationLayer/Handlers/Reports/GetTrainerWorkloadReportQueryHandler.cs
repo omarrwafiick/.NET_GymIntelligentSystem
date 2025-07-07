@@ -16,10 +16,8 @@ namespace ApplicationLayer.Handlers.Reports
         }
 
         public async Task<GetTrainerWorkloadReportDto> Handle(GetTrainerWorkloadReportQuery request, CancellationToken cancellationToken)
-        {
-            Guid.TryParse(request.TrainerId, out Guid trainerId);
-
-            if (trainerId.ToString() is null) return null; 
+        { 
+            if (Guid.TryParse(request.TrainerId, out Guid trainerId)) return null; 
 
             var trainer = await _repository.GetAsync(trainerId);
 

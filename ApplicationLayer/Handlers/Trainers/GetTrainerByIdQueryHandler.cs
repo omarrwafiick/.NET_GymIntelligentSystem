@@ -15,9 +15,15 @@ namespace ApplicationLayer.Handler.Trainers
             _repository = repository;
         }
 
-        public Task<GetTrainerDto> Handle(GetTrainerByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetTrainerDto> Handle(GetTrainerByIdQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (Guid.TryParse(request.TrainerId, out Guid trainerId)) return null;
+
+            var trainer = await _repository.GetAsync(trainerId);
+
+            if (trainer is null) return null;
+
+            return new GetTrainerDto(trainer.FullName, trainer.Username, trainer.Email, trainer.Speciality);
         }
     }
 }

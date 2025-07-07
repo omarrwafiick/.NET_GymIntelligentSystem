@@ -10,15 +10,22 @@ namespace ApplicationLayer.Handlers.Recommendations
 {
     public class GenerateSmartNutritionPlanQueryHandler : IRequestHandler<GenerateSmartNutritionPlanQuery, SmartNutritionPlanDto>
     {
-        private readonly IApplicationRepository<User> _repository;
+        private readonly IApplicationRepository<Member> _repository;
 
-        public GenerateSmartNutritionPlanQueryHandler(IApplicationRepository<User> repository)
+        public GenerateSmartNutritionPlanQueryHandler(IApplicationRepository<Member> repository)
         {
             _repository = repository;
         }
  
-        public Task<SmartNutritionPlanDto> Handle(GenerateSmartNutritionPlanQuery request, CancellationToken cancellationToken)
+        public async Task<SmartNutritionPlanDto> Handle(GenerateSmartNutritionPlanQuery request, CancellationToken cancellationToken)
         {
+            if (Guid.TryParse(request.MemberId, out Guid trainerId)) return null;
+
+            var member = await _repository.GetAsync(trainerId);
+
+            if (member is null) return null;
+
+
             throw new NotImplementedException();
         }
     }

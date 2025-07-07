@@ -22,11 +22,9 @@ namespace ApplicationLayer.Handlers.Admins
         }
 
         public async Task<bool> Handle(AddPermissionCommand request, CancellationToken cancellationToken)
-        {
-            Guid.TryParse(request.PermissionId, out Guid permissionId);
-            Guid.TryParse(request.AdminId, out Guid adminId);
-
-            if (permissionId.ToString() is null || adminId.ToString() is null) return false;
+        {  
+            if (Guid.TryParse(request.PermissionId, out Guid permissionId) ||
+                Guid.TryParse(request.AdminId, out Guid adminId)) return false;
 
             var permission = await _permissionRepository.GetAsync(permissionId);
             if (permission == null) return false;

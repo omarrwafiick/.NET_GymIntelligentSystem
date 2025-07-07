@@ -6,10 +6,11 @@ namespace DomainLayer.Entities
     {
         private ProgressReport() { }
         private ProgressReport(
-            Guid memberId, float weightKg, float bodyFatPercentage,
+            Guid memberId, Guid trainerId, float weightKg, float bodyFatPercentage,
             float muscleMass, string trainerNotes) 
         { 
             MemberId = memberId;
+            TrainerId = trainerId;
             WeightKg = weightKg;
             BodyFatPercentage = bodyFatPercentage;
             MuscleMass = muscleMass;
@@ -26,8 +27,8 @@ namespace DomainLayer.Entities
         public float MuscleMass { get; private set; } 
         public string TrainerNotes { get; private set; }
         public static ProgressReport Factory(
-            Guid memberId, float weightKg, float bodyFatPercentage,
+            Guid memberId, Guid trainerId ,float weightKg, float bodyFatPercentage,
             float muscleMass, string trainerNotes)
-            => new ProgressReport(memberId, weightKg, bodyFatPercentage, muscleMass, trainerNotes);
+            => new ProgressReport(memberId, trainerId, weightKg, bodyFatPercentage, muscleMass, trainerNotes);
     }
 }

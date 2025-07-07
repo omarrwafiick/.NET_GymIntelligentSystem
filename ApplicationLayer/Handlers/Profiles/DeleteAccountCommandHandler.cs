@@ -15,10 +15,8 @@ namespace ApplicationLayer.Handlers.Profiles
         }
 
         public async Task<bool> Handle(DeleteAccountCommand request, CancellationToken cancellationToken)
-        {
-            Guid.TryParse(request.AccountId, out Guid userId);
-
-            if (userId.ToString() is null) return false;
+        { 
+            if (Guid.TryParse(request.AccountId, out Guid userId)) return false;
 
             var user = await _repository.GetAsync(u => u.Id == userId);
             if (user == null) return false;

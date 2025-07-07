@@ -7,9 +7,10 @@ namespace DomainLayer.Entities
     {
         private WorkoutPlan() { }
         private WorkoutPlan(
-            Guid memberId, PlanType planType, DateTime startDate, int durationInDays) 
+            Guid memberId, Guid trainerId, PlanType planType, DateTime startDate, int durationInDays) 
         {
             MemberId = memberId;
+            TrainerId = trainerId;
             PlanType = planType;
             StartDate = startDate;
             DurationInDays = durationInDays;
@@ -23,8 +24,8 @@ namespace DomainLayer.Entities
         public int DurationInDays { get; private set; }
         public virtual ICollection<WorkoutSession> Sessions { get; private set; } = new List<WorkoutSession>();
         public static WorkoutPlan Factory
-            (Guid memberId, PlanType planType, DateTime startDate
+            (Guid memberId, Guid trainerId, PlanType planType, DateTime startDate
             , int durationInDays)
-            => new WorkoutPlan(memberId, planType, startDate, durationInDays);
+            => new WorkoutPlan(memberId, trainerId, planType, startDate, durationInDays);
     }
 }

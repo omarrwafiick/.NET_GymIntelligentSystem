@@ -16,9 +16,21 @@ namespace ApplicationLayer.Handler.Trainers
             _repository = repository;
         }
 
-        public Task<List<GetMemeberDto>> Handle(GetAssignedMembersQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetMemeberDto>> Handle(GetAssignedMembersQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (Guid.TryParse(request.TrainerId, out Guid trainerId)) return [];
+             
+            var trainer = await _repository.GetAsync(trainerId);
+
+            if (trainer is null) return [];
+
+            return trainer.MemberAssignments.Select(
+                m => {
+                    var member = m.Member;
+                    return new GetMemeberDto(member.FullName, member.Username, member.Email,
+                        member.HeightCm, member.WeightKg, member.Goal, member.DateOfBirth);
+                }
+            ).ToList(); 
         }
     }
 }

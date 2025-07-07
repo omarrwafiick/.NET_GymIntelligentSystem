@@ -17,10 +17,8 @@ namespace ApplicationLayer.Handlers.Reports
         }
 
         public async Task<GetRevenueReportDto?> Handle(GetRevenueReportQuery request, CancellationToken cancellationToken)
-        {
-            Guid.TryParse(request.MemberId, out Guid memberId);
-
-            if (memberId.ToString() is null) return null;
+        {  
+            if (Guid.TryParse(request.MemberId, out Guid memberId)) return null;
 
             var member = await _repository.GetAsync(memberId);
 

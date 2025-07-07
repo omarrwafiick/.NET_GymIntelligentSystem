@@ -9,15 +9,21 @@ namespace ApplicationLayer.Handlers.Recommendations
 {
     public class GenerateSmartWorkoutPlanQueryHandler : IRequestHandler<GenerateSmartWorkoutPlanQuery, SmartWorkoutPlanDto>
     {
-        private readonly IApplicationRepository<User> _repository;
+        private readonly IApplicationRepository<Member> _repository;
 
-        public GenerateSmartWorkoutPlanQueryHandler(IApplicationRepository<User> repository)
+        public GenerateSmartWorkoutPlanQueryHandler(IApplicationRepository<Member> repository)
         {
             _repository = repository;
         }
 
-        public Task<SmartWorkoutPlanDto> Handle(GenerateSmartWorkoutPlanQuery request, CancellationToken cancellationToken)
+        public async Task<SmartWorkoutPlanDto> Handle(GenerateSmartWorkoutPlanQuery request, CancellationToken cancellationToken)
         {
+            if (Guid.TryParse(request.MemberId, out Guid trainerId)) return null;
+
+            var member = await _repository.GetAsync(trainerId);
+
+            if (member is null) return null;
+             
             throw new NotImplementedException();
         }
     }

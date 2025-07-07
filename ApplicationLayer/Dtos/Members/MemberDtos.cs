@@ -6,7 +6,7 @@ namespace ApplicationLayer.Dtos.Members
 {
     public record RegisterMemberDto(
         [Required] string FullName, [Required] string Username, [Required] string Email, [Required] string Password,
-        [Required] float HeightCm, [Required] float WeightKg, [Required] Goal Goal, [Required] DateTime DateOfBirth);
+        [Required] float HeightCm, [Required] float WeightKg, [Required] Goal Goal, [Required] DateOnly DateOfBirth);
     public record CreateNutritionPlanDto(
         [Required] string MemberId, [Required] int CaloriesPerDay, [Required] float ProteinGrams,
         [Required] float CarbsGrams, [Required] float FatsGrams, [Required] string PlanNotes);
@@ -14,7 +14,7 @@ namespace ApplicationLayer.Dtos.Members
         [Required] string MemberId, [Required] ExerciseType ExerciseType, [Required] int Sets,
         [Required] int Reps, [Required] float WeightKg, [Required] string Notes);
     public record GetMemeberDto(string FullName, string Username, string Email,
-        float HeightCm, float WeightKg, Goal Goal, DateTime DateOfBirth);
+        float HeightCm, float WeightKg, Goal Goal, DateOnly DateOfBirth);
 
     public record GetProgressReportDto(
             float WeightKg, float BodyFatPercentage,

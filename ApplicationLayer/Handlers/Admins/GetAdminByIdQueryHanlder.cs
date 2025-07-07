@@ -16,9 +16,8 @@ namespace ApplicationLayer.Handlers.Admins
         }
 
         public async Task<GetAdminDto> Handle(GetAdminByIdQuery request, CancellationToken cancellationToken)
-        {
-            Guid.TryParse(request.AdminId, out Guid adminId);
-            if (adminId.ToString() is null) return null;
+        { 
+            if (Guid.TryParse(request.AdminId, out Guid adminId)) return null;
 
             var admin = await _repository.GetAsync(adminId);
             return admin is not null ? new GetAdminDto(admin.FullName, admin.Username, admin.Email) : null;
