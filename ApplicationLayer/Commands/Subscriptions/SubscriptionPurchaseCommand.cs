@@ -1,9 +1,12 @@
 ﻿using DomainLayer.Enums;
-using MediatR; 
+using MediatR;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationLayer.Commands.Subscriptions
 { 
     public record SubscriptionPurchaseCommand(
-        string MemberId, PlanType PlanType, DateTime StartDate, int DurationInDays, decimal Amount
+        [Required] string MemberId, [Required] string SubscriptionId, [Required] PlanType PlanType,
+        [Required] DateTime StartDate, [Required] int DurationInDays, [Required] decimal Amount,
+        [Required] CurrencyType CurrencyType, [Required] PaymentMethod PaymentMethod, [Required] string Description
     ) : IRequest<bool>;
 }

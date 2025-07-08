@@ -9,16 +9,24 @@ namespace ApplicationLayer.Handler.Subscriptions
 {
     public class GetPaymentHistoryQueryHandler : IRequestHandler<GetPaymentHistoryQuery, List<GetPaymentHistoryDto>>
     {
-        private readonly IApplicationRepository<PaymentHistory> _repository;
+        private readonly IApplicationRepository<Member> _repository;
 
-        public GetPaymentHistoryQueryHandler(IApplicationRepository<PaymentHistory> repository)
+        public GetPaymentHistoryQueryHandler(IApplicationRepository<Member> repository)
         {
             _repository = repository;
         }
 
-        public Task<List<GetPaymentHistoryDto>> Handle(GetPaymentHistoryQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetPaymentHistoryDto>> Handle(GetPaymentHistoryQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (Guid.TryParse(request.MemberId, out Guid memberId)) return [];
+
+            var member = await _repository.GetAsync(memberId);
+
+            if (member is null) return [];
+
+            return member.PaymentHistory.Select(p => new GetPaymentHistoryDto(
+                    p.SubscriptionId, p.Amount, p.Currency, p.PaymentMethod, p.PaidAt, p.Description
+            )).ToList();
         }
     }
 }

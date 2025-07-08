@@ -17,11 +17,12 @@ namespace PresentationLayer.Controllers
             _mediator = mediator;  
         }
 
-        [HttpPost("purchase/{memberid}")]
-        public async Task<IActionResult> SubscriptionPurchase([FromRoute] string memberid, [FromBody] PurchaseSubscriptionDto dto)
+        [HttpPost("purchase/{memberid}/{subscribtionid}")]
+        public async Task<IActionResult> SubscriptionPurchase([FromRoute] string memberid, [FromRoute] string subscribtionid, [FromBody] PurchaseSubscriptionDto dto)
         {
             var command = new SubscriptionPurchaseCommand(
-                memberid, dto.PlanType, dto.StartDate, dto.DurationInDays, dto.Amount    
+                memberid, subscribtionid, dto.PlanType, dto.StartDate, dto.DurationInDays, 
+                dto.Amount, dto.Currency, dto.PaymentMethod, dto.Description
             );
             var result = await _mediator.Send(command);
             return !result ?
@@ -40,9 +41,9 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost("upgrade/{subscribtionid}")]
-        public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscribtionid)
+        public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscribtionid, [FromBody] UpgradeSubscriptionDto dto)
         {
-            var command = new UpgradeSubscriptionCommand(subscribtionid);
+            var command = new UpgradeSubscriptionCommand(subscribtionid, dto.StartDate, dto.EndDate);
             var result = await _mediator.Send(command);
             return !result ?
                 BadRequest("Subscription upgrade request couldn't be fulfilled at the moment") :

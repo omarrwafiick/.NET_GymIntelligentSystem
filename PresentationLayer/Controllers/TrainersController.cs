@@ -49,11 +49,11 @@ namespace PresentationLayer.Controllers
                 NoContent();
         }
 
-        [HttpPost("progress/{memberid}")]
-        public async Task<IActionResult> CreateProgressReport([FromRoute] string memberid, [FromBody] CreateTrainerProgressReportDto dto)
+        [HttpPost("progress/{memberid}/{trainerid}")]
+        public async Task<IActionResult> CreateProgressReport([FromRoute] string memberid, [FromRoute] string trainerid, [FromBody] CreateTrainerProgressReportDto dto)
         {
             var command = new CreateTrainerProgressReportCommand(
-                memberid, dto.WeightKg, dto.BodyFatPercentage, dto.MuscleMass, dto.TrainerNotes
+                memberid, trainerid, dto.WeightKg, dto.BodyFatPercentage, dto.MuscleMass, dto.TrainerNotes
             );
             var result = await _mediator.Send(command);
             return !result ?

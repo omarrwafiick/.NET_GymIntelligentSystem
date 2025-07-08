@@ -6,13 +6,12 @@ namespace DomainLayer.Entities
     {
         private Subscription() { }
 
-        private Subscription(Guid memberId, PlanType planType, DateTime startDate, int durationInDays, decimal amount)
+        private Subscription(Guid memberId, PlanType planType, DateTime startDate, int durationInDays)
         {
             MemberId = memberId;
             PlanType = planType;
             StartDate = startDate;
-            EndDate = startDate.AddDays(durationInDays);
-            AmountPaid = amount;
+            EndDate = startDate.AddDays(durationInDays);  
             Status = SubscriptionStatus.Active;
             CreatedAt = DateTime.UtcNow;
         }
@@ -21,13 +20,17 @@ namespace DomainLayer.Entities
         public virtual Member Member { get; private set; }
         public PlanType PlanType { get; private set; }
         public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
-        public decimal AmountPaid { get; private set; }
+        public DateTime EndDate { get; private set; } 
         public SubscriptionStatus Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public virtual List<PaymentHistory> PaymentHistories { get; set; } = new List<PaymentHistory>();
 
-        public static Subscription Factory(Guid memberId, PlanType planType, DateTime startDate, int durationInDays, decimal amount)
-            => new Subscription(memberId, planType, startDate, durationInDays, amount);
+        public void AddPayment(PaymentHistory paymentHistory)
+        {
+            PaymentHistories.Add(paymentHistory);
+        }
+        public static Subscription Factory(Guid memberId, PlanType planType, DateTime startDate, int durationInDays)
+            => new Subscription(memberId, planType, startDate, durationInDays);
 
         public void Cancel()
             => Status = SubscriptionStatus.Cancelled;
@@ -37,6 +40,12 @@ namespace DomainLayer.Entities
 
         public void Expire()
             => Status = SubscriptionStatus.Expired;
+
+        public void Upgrade(DateTime startDate, DateTime endDate)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+        }
         public bool IsActive() => Status == SubscriptionStatus.Active && EndDate > DateTime.UtcNow;
     }
 

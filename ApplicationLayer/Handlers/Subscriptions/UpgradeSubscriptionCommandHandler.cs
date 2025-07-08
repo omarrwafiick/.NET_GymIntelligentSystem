@@ -16,9 +16,17 @@ namespace ApplicationLayer.Handler.Subscriptions
             _repository = repository;
         }
 
-        public Task<bool> Handle(UpgradeSubscriptionCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpgradeSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (Guid.TryParse(request.SubscribtionId, out Guid subscribtionId)) return false;
+
+            var subscribtion = await _repository.GetAsync(subscribtionId);
+
+            if (subscribtion is null) return false;
+
+            subscribtion.Upgrade(request.StartDate, request.EndDate);
+
+            return await _repository.UpdateAsync(subscribtion);
         }
     }
 }

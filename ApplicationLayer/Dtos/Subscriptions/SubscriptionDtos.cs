@@ -5,13 +5,16 @@ using System.ComponentModel.DataAnnotations;
 namespace ApplicationLayer.Dtos.Subscriptions
 { 
     public record PurchaseSubscriptionDto(
-        [Required] string MemberId, [Required] PlanType PlanType, [Required] DateTime StartDate,
-        [Required] int DurationInDays, [Required] decimal Amount);
+        [Required] string MemberId, [Required] string SubscriptionId, [Required] PlanType PlanType, 
+        [Required] DateTime StartDate,[Required] int DurationInDays, [Required] decimal Amount,
+        [Required] CurrencyType Currency, [Required] PaymentMethod PaymentMethod, [Required] string Description);
     
     public record GetSubscriptionDto(
-        Guid MemberId, PlanType PlanType,DateTime StartDate, DateTime EndDate, int DurationInDays, decimal Amount);
+         Guid MemberId, PlanType PlanType,DateTime StartDate, DateTime EndDate, int DurationInDays);
      
     public record GetPaymentHistoryDto(
-            decimal Amount, CurrencyType Currency, PaymentMethod PaymentMethod,
-            Guid TransactionId, DateTime PaidAt, string Description);
+            Guid SubscriptionId, decimal Amount, CurrencyType Currency, 
+            PaymentMethod PaymentMethod, DateTime PaidAt, string Description);
+
+    public record UpgradeSubscriptionDto([Required] DateTime StartDate, [Required] DateTime EndDate);
 }

@@ -2,6 +2,6 @@
 namespace ApplicationLayer.Commands.Subscriptions
 { 
     public record UpgradeSubscriptionCommand(
-        string subscribtionId
+        string SubscribtionId, DateTime StartDate, DateTime EndDate
     ) : IRequest<bool>;
 }

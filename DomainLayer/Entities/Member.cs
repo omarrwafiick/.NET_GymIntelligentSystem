@@ -24,13 +24,21 @@ namespace DomainLayer.Entities
         public float WeightKg { get; private set; }
         public Goal Goal { get; private set; }
         public DateOnly DateOfBirth { get; private set; }
-        public virtual IEnumerable<WorkoutLog> WorkoutLogs { get; set; } = new List<WorkoutLog>();
-        public virtual IEnumerable<NutritionPlan> NutritionPlans { get; set; } = new List<NutritionPlan>();
-        public virtual IEnumerable<WorkoutPlan> WorkoutPlans { get; set; } = new List<WorkoutPlan>();
-        public virtual IEnumerable<PaymentHistory> PaymentHistory { get; set; } = new List<PaymentHistory>();
-        public virtual IEnumerable<ProgressReport> ProgressReports { get; set; } = new List<ProgressReport>();
-        public virtual IEnumerable<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public virtual IEnumerable<WorkoutLog> WorkoutLogs { get; private set; } = new List<WorkoutLog>();
+        public virtual IEnumerable<NutritionPlan> NutritionPlans { get; private set; } = new List<NutritionPlan>();
+        public virtual IEnumerable<WorkoutPlan> WorkoutPlans { get; private set; } = new List<WorkoutPlan>();
+        public virtual List<PaymentHistory> PaymentHistory { get; private set; } = new List<PaymentHistory>();
+        public virtual IEnumerable<ProgressReport> ProgressReports { get; private set; } = new List<ProgressReport>();
+        public virtual List<Subscription> Subscriptions { get; private set; } = new List<Subscription>();
 
+        public void AddSubscription(Subscription subscription)
+        {
+            Subscriptions.Add(subscription);
+        } 
+        public void AddPayment(PaymentHistory paymentHistory)
+        {
+            PaymentHistory.Add(paymentHistory);
+        }
         public static Member Factory(
             string fullName, string username, string email, string passwordHash,
             float heightCm, float weightKg, Goal goal, DateOnly dateOfBirth) 

@@ -7,13 +7,12 @@ namespace DomainLayer.Entities
     {
         private PaymentHistory() { }
 
-        private PaymentHistory(Guid memberId, decimal amount, CurrencyType currency, PaymentMethod paymentMethod, string transactionId, DateTime paidAt, string description)
+        private PaymentHistory(Guid memberId, Guid subscriptionId, decimal amount, CurrencyType currency, PaymentMethod paymentMethod, DateTime paidAt, string description)
         {
             MemberId = memberId;
             Amount = amount;
             Currency = currency;
-            PaymentMethod = paymentMethod;
-            TransactionId = transactionId;
+            PaymentMethod = paymentMethod; 
             PaidAt = paidAt;
             Description = description;
         }
@@ -22,22 +21,22 @@ namespace DomainLayer.Entities
         public virtual Member Member { get; private set; } 
         public decimal Amount { get; private set; }
         public CurrencyType Currency { get; private set; }  
-        public PaymentMethod PaymentMethod { get; private set; } 
-        public string TransactionId { get; private set; }  
+        public PaymentMethod PaymentMethod { get; private set; }   
         public DateTime PaidAt { get; private set; } 
         public string Description { get; private set; } 
-
+        public Guid SubscriptionId { get; private set; } 
+        public virtual Subscription Subscription { get; private set; }  
         public static PaymentHistory Factory(
             Guid memberId,
+            Guid subscriptionId,
             decimal amount,
             CurrencyType currency,
-            PaymentMethod paymentMethod,
-            string transactionId,
+            PaymentMethod paymentMethod, 
             DateTime paidAt,
             string description
         )
         {
-            return new PaymentHistory(memberId, amount, currency, paymentMethod, transactionId, paidAt, description);
+            return new PaymentHistory(memberId, subscriptionId, amount, currency, paymentMethod, paidAt, description);
         }
     }
 

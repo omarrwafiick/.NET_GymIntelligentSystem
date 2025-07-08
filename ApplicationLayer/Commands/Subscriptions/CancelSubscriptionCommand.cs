@@ -3,6 +3,6 @@
 namespace ApplicationLayer.Commands.Subscriptions
 { 
     public record CancelSubscriptionCommand(
-        string subscribtionId
+        string SubscribtionId
     ) : IRequest<bool>;
 }

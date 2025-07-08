@@ -21,7 +21,7 @@ namespace ApplicationLayer.Handlers.Admins
             return subscriptions.Any() ? subscriptions.Select(
                 s => new GetSubscriptionDto(
                     s.MemberId, s.PlanType, s.StartDate, s.EndDate, 
-                    (s.EndDate.Day - s.StartDate.Day), s.AmountPaid)).ToList()
+                    (s.EndDate.Day - s.StartDate.Day))).ToList()
             : [];
         }
     }
