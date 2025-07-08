@@ -4,16 +4,16 @@ using MediatR;
 
 namespace ApplicationLayer.Commands.WorkoutPlans
 {
-    public class DeactivateWorkoutPlanCommandHandler : IRequestHandler<DeactivateWorkoutPlanCommand, bool>
+    public class ReactivateWorkoutPlanCommandHandler : IRequestHandler<ReactivateWorkoutPlanCommand, bool>
     {
         private readonly IApplicationRepository<WorkoutPlan> _repository;
 
-        public DeactivateWorkoutPlanCommandHandler(IApplicationRepository<WorkoutPlan> repository)
+        public ReactivateWorkoutPlanCommandHandler(IApplicationRepository<WorkoutPlan> repository)
         {
             _repository = repository;
         }
 
-        public async Task<bool> Handle(DeactivateWorkoutPlanCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ReactivateWorkoutPlanCommand request, CancellationToken cancellationToken)
         {
             if (Guid.TryParse(request.WorkoutPlanId, out Guid workoutPlanId)) return false;
 
@@ -21,7 +21,7 @@ namespace ApplicationLayer.Commands.WorkoutPlans
 
             if (workoutPlan == null) return false;
 
-            workoutPlan.Deactivate();
+            workoutPlan.Reactivate();
             
             return await _repository.UpdateAsync(workoutPlan);
         }

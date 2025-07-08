@@ -17,27 +17,17 @@ namespace PresentationLayer.Controllers
             _mediator = mediator; 
         }
 
-        [HttpPost("{memberid}")]
-        public async Task<IActionResult> CreateWorkoutPlan([FromRoute] string memberid, [FromBody] CreateWorkoutPlanDto dto)
+        [HttpPost("{memberid}/{trainerid}")]
+        public async Task<IActionResult> CreateWorkoutPlan([FromRoute] string memberid, [FromRoute] string trainerid, [FromBody] CreateWorkoutPlanDto dto)
         {
             var command = new CreateWorkoutPlanCommand(
-                memberid, dto.PlanType, dto.StartDate, dto.DurationInDays
+                memberid, trainerid, dto.PlanType, dto.StartDate, dto.DurationInDays
             );
             var result = await _mediator.Send(command);
             return !result ?
                 BadRequest("Workout plan couldn't be created") :
                 NoContent();
-        }
-
-        [HttpGet("member/{memberid}")]
-        public async Task<IActionResult> GetWorkoutPlans([FromRoute] string memberid)
-        {
-            var query = new GetWorkoutPlansQuery(memberid);
-            var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("Workout plan couldn't be created") :
-                Ok(new {data = result});
-        }
+        } 
 
         [HttpPost("{planid}/add-session")]
         public async Task<IActionResult> AddWorkoutSession([FromRoute] string planid, [FromBody] AddWorkoutSessionDto dto)
@@ -78,6 +68,16 @@ namespace PresentationLayer.Controllers
             var result = await _mediator.Send(command);
             return !result ?
                 BadRequest("Workout session couldn't be reactivated") :
+                NoContent();
+        }
+
+        [HttpPut("{workoutplanid}/deactivate")]
+        public async Task<IActionResult> DeactivateWorkoutPlan([FromRoute] string workoutplanid)
+        {
+            var command = new DeactivateWorkoutPlanCommand(workoutplanid);
+            var result = await _mediator.Send(command);
+            return !result ?
+                BadRequest("Workout session couldn't be deactivated") :
                 NoContent();
         }
     }

@@ -14,6 +14,7 @@ namespace DomainLayer.Entities
             PlanType = planType;
             StartDate = startDate;
             DurationInDays = durationInDays;
+            IsActive = true;
         }
         public Guid MemberId { get; private set; }
         public virtual Member Member { get; private set; }
@@ -22,6 +23,15 @@ namespace DomainLayer.Entities
         public PlanType PlanType { get; private set; }
         public DateTime StartDate { get; private set; }
         public int DurationInDays { get; private set; }
+        public bool IsActive { get; private set; }
+        public void Deactivate()
+        {
+            IsActive = false;
+        } 
+        public void Reactivate()
+        {
+            IsActive = true;
+        }
         public virtual ICollection<WorkoutSession> Sessions { get; private set; } = new List<WorkoutSession>();
         public static WorkoutPlan Factory
             (Guid memberId, Guid trainerId, PlanType planType, DateTime startDate
