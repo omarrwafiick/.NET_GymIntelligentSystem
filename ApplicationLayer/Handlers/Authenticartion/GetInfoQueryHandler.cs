@@ -17,7 +17,7 @@ namespace ApplicationLayer.Handlers.Authenticartion
 
         public async Task<GetUserInfoDto> Handle(GetInfoQuery request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.Id, out Guid id)) return null;
+            if (!Guid.TryParse(request.Id, out Guid id)) return null;
 
             var user = await _repository.GetAsync(id);  
 

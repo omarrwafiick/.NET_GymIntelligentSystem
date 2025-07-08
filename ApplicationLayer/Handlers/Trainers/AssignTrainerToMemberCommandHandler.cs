@@ -24,8 +24,8 @@ namespace ApplicationLayer.Handler.Trainers
 
         public async Task<bool> Handle(AssignTrainerToMemberCommand request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.MemberId, out Guid memberId) ||
-                Guid.TryParse(request.TrainerId, out Guid trainerId)) return false;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)
+                || !Guid.TryParse(request.TrainerId, out Guid trainerId)) return false;
 
             var member = await _memberRepository.GetAsync(memberId);
             var trainer = await _repository.GetAsync(trainerId);

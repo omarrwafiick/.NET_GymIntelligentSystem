@@ -20,8 +20,8 @@ namespace ApplicationLayer.Handler.Subscriptions
 
         public async Task<bool> Handle(SubscriptionPurchaseCommand request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.MemberId, out Guid memberId) ||
-                Guid.TryParse(request.SubscriptionId, out Guid subscriptionId)) return false;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)
+                || !Guid.TryParse(request.SubscriptionId, out Guid subscriptionId)) return false;
 
             var member = await _memberRepository.GetAsync(memberId);
 

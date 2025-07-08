@@ -17,7 +17,7 @@ namespace ApplicationLayer.Handlers.Feedbacks
 
         public async Task<bool> Handle(ContactSupportCommand request, CancellationToken cancellationToken)
         { 
-            if (Guid.TryParse(request.UserId, out Guid userId)) return false;
+            if (!Guid.TryParse(request.UserId, out Guid userId)) return false;
 
             var contactMessage = SupportMessage.Factory(request.Message, request.Subject, userId);
 

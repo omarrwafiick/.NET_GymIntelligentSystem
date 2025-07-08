@@ -23,7 +23,7 @@ namespace PresentationLayer.Controllers
         {
             var command = new RegisterMemberCommand(
                 dto.FullName, dto.Username, dto.Email, dto.Password, 
-                dto.HeightCm, dto.WeightKg, dto.Goal, dto.DateOfBirth);
+                dto.HeightCm, dto.WeightKg, dto.Goal, dto.IsMale, dto.DateOfBirth);
 
             var result = await _mediator.Send(command);
 

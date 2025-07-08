@@ -18,7 +18,7 @@ namespace ApplicationLayer.Handler.Subscriptions
 
         public async Task<List<GetPaymentHistoryDto>> Handle(GetPaymentHistoryQuery request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.MemberId, out Guid memberId)) return [];
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return [];
 
             var member = await _repository.GetAsync(memberId);
 

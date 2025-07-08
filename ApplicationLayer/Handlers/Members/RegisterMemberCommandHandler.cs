@@ -2,6 +2,7 @@
 using ApplicationLayer.Contracts;
 using ApplicationLayer.Helpers;
 using DomainLayer.Entities;
+using DomainLayer.Enums;
 using MediatR;
 namespace ApplicationLayer.Handlers.Members
 {
@@ -25,7 +26,8 @@ namespace ApplicationLayer.Handlers.Members
 
             member = Member.Factory(
                     request.FullName, request.Username, request.Email, hashedPassword,
-                    request.HeightCm, request.WeightKg, request.Goal, request.DateOfBirth
+                    request.HeightCm, request.WeightKg, request.Goal, request.DateOfBirth, 
+                    request.IsMale ? Gender.MALE : Gender.FEMALE
             );
 
             var result = await _repository.CreateAsync(member);

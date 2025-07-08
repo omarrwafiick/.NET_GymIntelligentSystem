@@ -21,7 +21,7 @@ namespace PresentationLayer.Controllers
         public async Task<IActionResult> CreateWorkoutPlan([FromRoute] string memberid, [FromRoute] string trainerid, [FromBody] CreateWorkoutPlanDto dto)
         {
             var command = new CreateWorkoutPlanCommand(
-                memberid, trainerid, dto.PlanType, dto.StartDate, dto.DurationInDays
+                memberid, trainerid, dto.PlanType, dto.StartDate, dto.DurationInDays, dto.FocusArea
             );
             var result = await _mediator.Send(command);
             return !result ?

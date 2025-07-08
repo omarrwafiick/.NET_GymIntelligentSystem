@@ -15,7 +15,7 @@ namespace ApplicationLayer.Handler.Subscriptions
         } 
         public async Task<bool> Handle(CancelSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.SubscribtionId, out Guid subscribtionId)) return false;
+            if (!Guid.TryParse(request.SubscribtionId, out Guid subscribtionId)) return false;
 
             var subscribtion = await _repository.GetAsync(subscribtionId);
 

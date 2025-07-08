@@ -8,7 +8,7 @@ namespace DomainLayer.Entities
         private Member() { }
         private Member(
             string fullName, string username, string email, string passwordHash,
-            float heightCm, float weightKg, Goal goal, DateOnly dateOfBirth) 
+            float heightCm, float weightKg, Goal goal, DateOnly dateOfBirth, Gender gender) 
         {
             FullName = fullName;
             Username = username;
@@ -19,9 +19,11 @@ namespace DomainLayer.Entities
             Goal = goal;
             DateOfBirth = dateOfBirth; 
             Role = Role.Member;
+            Gender = gender;
         }
         public float HeightCm { get; private set; }
         public float WeightKg { get; private set; }
+        public Gender Gender { get; private set; }
         public Goal Goal { get; private set; }
         public DateOnly DateOfBirth { get; private set; }
         public virtual IEnumerable<WorkoutLog> WorkoutLogs { get; private set; } = new List<WorkoutLog>();
@@ -41,7 +43,7 @@ namespace DomainLayer.Entities
         }
         public static Member Factory(
             string fullName, string username, string email, string passwordHash,
-            float heightCm, float weightKg, Goal goal, DateOnly dateOfBirth) 
-            => new Member(fullName, username, email, passwordHash,heightCm, weightKg, goal, dateOfBirth);
+            float heightCm, float weightKg, Goal goal, DateOnly dateOfBirth, Gender gender) 
+            => new Member(fullName, username, email, passwordHash,heightCm, weightKg, goal, dateOfBirth, gender);
     }
 }

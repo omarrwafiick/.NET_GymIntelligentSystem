@@ -17,7 +17,7 @@ namespace ApplicationLayer.Handlers.Members
         }
         public async Task<bool> Handle(CreateWorkoutLogCommand request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.MemberId, out Guid memberId)) return false;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return false;
 
             var member = await _memberRepository.GetAsync(memberId);
 

@@ -20,7 +20,7 @@ namespace ApplicationLayer.Commands.WorkoutPlans
 
         public async Task<bool> Handle(AddWorkoutSessionCommand request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.WorkoutPlanId, out Guid workoutPlanId)) return false;
+            if (!Guid.TryParse(request.WorkoutPlanId, out Guid workoutPlanId)) return false;
 
             var workplan = await _workoutPlanRepository.GetAsync(workoutPlanId);
             

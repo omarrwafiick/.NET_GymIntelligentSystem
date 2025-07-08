@@ -12,6 +12,7 @@ namespace ApplicationLayer.Commands.Members
     float HeightCm,
     float WeightKg,
     Goal Goal,
+    bool IsMale,  
     DateOnly DateOfBirth
     ) : IRequest<Guid?>;
 }

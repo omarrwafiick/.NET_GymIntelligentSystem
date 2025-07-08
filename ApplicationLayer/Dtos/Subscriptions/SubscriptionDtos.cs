@@ -16,5 +16,8 @@ namespace ApplicationLayer.Dtos.Subscriptions
             Guid SubscriptionId, decimal Amount, CurrencyType Currency, 
             PaymentMethod PaymentMethod, DateTime PaidAt, string Description);
 
-    public record UpgradeSubscriptionDto([Required] DateTime StartDate, [Required] DateTime EndDate);
+    public record UpgradeSubscriptionDto(
+        [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] string SubscriptionId, 
+        [Required] PlanType PlanType, [Required] decimal Amount, 
+        [Required] CurrencyType Currency,[Required] PaymentMethod PaymentMethod, [Required] string Description);
 }

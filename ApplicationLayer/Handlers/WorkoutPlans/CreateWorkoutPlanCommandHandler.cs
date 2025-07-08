@@ -23,8 +23,8 @@ namespace ApplicationLayer.Commands.WorkoutPlans
         {
             var now = DateTime.UtcNow;
             var endDate = new DateTime(now.Year, now.Month, request.DurationInDays);
-            if (Guid.TryParse(request.MemberId, out Guid memberId)
-                || Guid.TryParse(request.TrainerId, out Guid trainerId)
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)
+                || !Guid.TryParse(request.TrainerId, out Guid trainerId)
                 || (request.StartDate > now || endDate < request.StartDate)) return false;
 
             var member = await _memberRepository.GetAsync(memberId);
@@ -33,7 +33,8 @@ namespace ApplicationLayer.Commands.WorkoutPlans
             if (member is null || trainer is null) return false;
 
             return await _repository.CreateAsync(
-                WorkoutPlan.Factory(memberId, trainerId, request.PlanType, request.StartDate, request.DurationInDays)
+                WorkoutPlan.Factory(memberId, trainerId, request.PlanType, 
+                request.StartDate, request.DurationInDays, request.FocusArea)
             );
         }
     }

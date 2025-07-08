@@ -21,7 +21,7 @@ namespace ApplicationLayer.Handlers.Members
     
         public async Task<List<GetWorkoutLogsDto>> Handle(GetWorkoutLogsQuery request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.MemberId, out Guid memberId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return null;
 
             var member = await _memberRepository.GetAsync(memberId);
 

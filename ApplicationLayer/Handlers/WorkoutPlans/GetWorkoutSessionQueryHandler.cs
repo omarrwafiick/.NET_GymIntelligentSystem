@@ -17,7 +17,7 @@ namespace ApplicationLayer.Queries.WorkoutPlans
 
         public async Task<List<GetWorkoutSessionDto>> Handle(GetWorkoutSessionsQuery request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.MemberId, out Guid memberId)) return [];
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return [];
 
             var member = await _repository.GetAsync(memberId);
 

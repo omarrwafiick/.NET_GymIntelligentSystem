@@ -1,7 +1,10 @@
-﻿using MediatR; 
+﻿using DomainLayer.Enums;
+using MediatR; 
 namespace ApplicationLayer.Commands.Subscriptions
 { 
     public record UpgradeSubscriptionCommand(
-        string SubscribtionId, DateTime StartDate, DateTime EndDate
+         string MemberId, string SubscribtionId,  DateTime StartDate, DateTime EndDate,
+         PlanType PlanType,  decimal Amount, CurrencyType CurrencyType,
+          PaymentMethod PaymentMethod,  string Description
     ) : IRequest<bool>;
 }

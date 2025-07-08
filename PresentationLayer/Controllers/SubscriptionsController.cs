@@ -40,10 +40,13 @@ namespace PresentationLayer.Controllers
                 NoContent();
         }
 
-        [HttpPost("upgrade/{subscribtionid}")]
-        public async Task<IActionResult> UpgradeSubscription([FromRoute] string subscribtionid, [FromBody] UpgradeSubscriptionDto dto)
+        [HttpPost("upgrade/{memberid}/{subscribtionid}")]
+        public async Task<IActionResult> UpgradeSubscription([FromRoute] string memberid, [FromRoute] string subscribtionid, [FromBody] UpgradeSubscriptionDto dto)
         {
-            var command = new UpgradeSubscriptionCommand(subscribtionid, dto.StartDate, dto.EndDate);
+            var command = new UpgradeSubscriptionCommand(
+                memberid, subscribtionid, dto.StartDate, dto.EndDate, dto.PlanType, 
+                dto.Amount, dto.Currency, dto.PaymentMethod, dto.Description
+            );
             var result = await _mediator.Send(command);
             return !result ?
                 BadRequest("Subscription upgrade request couldn't be fulfilled at the moment") :

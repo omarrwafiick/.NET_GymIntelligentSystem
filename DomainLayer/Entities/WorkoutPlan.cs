@@ -7,7 +7,7 @@ namespace DomainLayer.Entities
     {
         private WorkoutPlan() { }
         private WorkoutPlan(
-            Guid memberId, Guid trainerId, PlanType planType, DateTime startDate, int durationInDays) 
+            Guid memberId, Guid trainerId, PlanType planType, DateTime startDate, int durationInDays, FocusArea focusArea) 
         {
             MemberId = memberId;
             TrainerId = trainerId;
@@ -15,6 +15,7 @@ namespace DomainLayer.Entities
             StartDate = startDate;
             DurationInDays = durationInDays;
             IsActive = true;
+            FocusArea = focusArea;
         }
         public Guid MemberId { get; private set; }
         public virtual Member Member { get; private set; }
@@ -23,7 +24,8 @@ namespace DomainLayer.Entities
         public PlanType PlanType { get; private set; }
         public DateTime StartDate { get; private set; }
         public int DurationInDays { get; private set; }
-        public bool IsActive { get; private set; }
+        public bool IsActive { get; private set; } 
+        public FocusArea FocusArea { get; private set; }
         public void Deactivate()
         {
             IsActive = false;
@@ -35,7 +37,7 @@ namespace DomainLayer.Entities
         public virtual ICollection<WorkoutSession> Sessions { get; private set; } = new List<WorkoutSession>();
         public static WorkoutPlan Factory
             (Guid memberId, Guid trainerId, PlanType planType, DateTime startDate
-            , int durationInDays)
-            => new WorkoutPlan(memberId, trainerId, planType, startDate, durationInDays);
+            , int durationInDays, FocusArea focusArea)
+            => new WorkoutPlan(memberId, trainerId, planType, startDate, durationInDays, focusArea);
     }
 }

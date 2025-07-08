@@ -15,7 +15,7 @@ namespace ApplicationLayer.Commands.WorkoutPlans
 
         public async Task<bool> Handle(DeactivateWorkoutPlanCommand request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.WorkoutPlanId, out Guid workoutPlanId)) return false;
+            if (!Guid.TryParse(request.WorkoutPlanId, out Guid workoutPlanId)) return false;
 
             var workoutPlan = await _repository.GetAsync(workoutPlanId);
 

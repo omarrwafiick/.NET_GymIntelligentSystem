@@ -17,8 +17,8 @@ namespace ApplicationLayer.Handlers.Feedbacks
         public async Task<bool> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
         { 
 
-            if (Guid.TryParse(request.UserId, out Guid userId) 
-                || Guid.TryParse(request.TargetId, out Guid targetId)) return false;
+            if (!Guid.TryParse(request.UserId, out Guid userId) 
+                || !Guid.TryParse(request.TargetId, out Guid targetId)) return false;
 
             var feedback = Feedback.Factory(userId, request.Rating, request.Comment, request.TargetType, targetId);
 

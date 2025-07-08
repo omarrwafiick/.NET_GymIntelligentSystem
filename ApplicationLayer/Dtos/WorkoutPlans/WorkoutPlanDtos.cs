@@ -9,6 +9,7 @@ namespace ApplicationLayer.Dtos.WorkoutPlans
         [Required] string WorkoutPlanId, [Required] DateTime ScheduledDate, [Required] string Notes);
     public record CreateWorkoutPlanDto(
             [Required] string MemberId, [Required] PlanType PlanType,
-            [Required] DateTime StartDate, [Required] int DurationInDays); 
+            [Required] DateTime StartDate, [Required] int DurationInDays,
+            [Required] FocusArea FocusArea); 
 
 }

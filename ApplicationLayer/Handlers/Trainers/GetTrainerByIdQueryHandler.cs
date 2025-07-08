@@ -17,7 +17,7 @@ namespace ApplicationLayer.Handler.Trainers
 
         public async Task<GetTrainerDto> Handle(GetTrainerByIdQuery request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.TrainerId, out Guid trainerId)) return null;
+            if (!Guid.TryParse(request.TrainerId, out Guid trainerId)) return null;
 
             var trainer = await _repository.GetAsync(trainerId);
 

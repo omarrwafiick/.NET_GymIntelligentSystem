@@ -13,26 +13,24 @@ namespace ApplicationLayer.Dtos.Recommendations
          DateTime RecommendedStartDate
     );
 
-    public record SmartWorkoutPlanDto(
-         Guid MemberId,
+    public record SmartWorkoutPlanDto( 
          PlanType PlanType,  
          int DurationInDays,
          DateTime RecommendedStartDate,
-         ICollection<SmartWorkoutSessionDto> Sessions 
+         SmartWorkoutSessionDto Session
     );
 
     public record SmartWorkoutSessionDto
     (
-         DateTime ScheduledDate ,
-         string FocusArea ,  
-         List<SmartWorkoutExerciseDto> Exercises 
+         DateTime ScheduledDate,
+         string FocusArea,  
+         SmartWorkoutExerciseDto Exercise
     );
 
     public record SmartWorkoutExerciseDto
     (
-          ExerciseType ExerciseType ,
-          int Sets ,
-          int Reps ,
-          float WeightKg 
+          ExerciseType ExerciseType,
+          int Sets,
+          int Reps
     );
 }
