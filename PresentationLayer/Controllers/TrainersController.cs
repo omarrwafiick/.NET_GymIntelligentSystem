@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [AuthorizeRoles("TRAINER")]
     [Route("api/v1/trainers")]
     [ApiController]
     public class TrainersController : ControllerBase
@@ -24,9 +25,9 @@ namespace PresentationLayer.Controllers
                 dto.FullName, dto.Username, dto.Email, dto.Password, dto.Specialty
             );
             var result = await _mediator.Send(command);
-            return result.ToString() is null ?
-                BadRequest("Trainer couldn't be created") :
-                Ok(new { resourceId = result });
+            return result.SuccessOrNot ?
+                Ok(new { resourceId = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("{id}")]
@@ -34,9 +35,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetTrainerByIdQuery(id);
             var result = await _mediator.Send(query);
-            return result is null ?
-                NotFound($"No trainer was found using this id : {id}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpPost("assign/{trainerid}/{memberid}")]
@@ -44,9 +45,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new AssignTrainerToMemberCommand(memberid, trainerid);
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest($"Couldn't assign trainer with id : {trainerid} to member with id : {memberid}") :
-                NoContent();
+            return result.SuccessOrNot ?
+              NoContent() :
+              BadRequest(result.Message);
         }
 
         [HttpPost("progress/{memberid}/{trainerid}")]
@@ -56,9 +57,9 @@ namespace PresentationLayer.Controllers
                 memberid, trainerid, dto.WeightKg, dto.BodyFatPercentage, dto.MuscleMass, dto.TrainerNotes
             );
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Progress report couldn't be created") :
-                NoContent();
+            return result.SuccessOrNot ?
+             NoContent() :
+             BadRequest(result.Message);
         }
 
         [HttpGet("assigned/{trainerid}")]
@@ -66,9 +67,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetAssignedMembersQuery(trainerid);
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                BadRequest($"Trainer with id : {trainerid} is not assigned to any user") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
     }
 }

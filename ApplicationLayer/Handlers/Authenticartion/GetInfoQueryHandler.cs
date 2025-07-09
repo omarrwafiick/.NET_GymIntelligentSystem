@@ -1,12 +1,8 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Authenticartion;
-using ApplicationLayer.Queries.Authenticartion;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Authenticartion
 {
-    public class GetInfoQueryHandler : IRequestHandler<GetInfoQuery, GetUserInfoDto>
+    public class GetInfoQueryHandler : IRequestHandler<GetInfoQuery, ServiceResult<GetUserInfoDto>>
     {
         private readonly IApplicationRepository<User> _repository;
 
@@ -15,13 +11,15 @@ namespace ApplicationLayer.Handlers.Authenticartion
             _repository = repository;
         }
 
-        public async Task<GetUserInfoDto> Handle(GetInfoQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<GetUserInfoDto>> Handle(GetInfoQuery request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.Id, out Guid id)) return null;
+            if (!Guid.TryParse(request.Id, out Guid id)) return ServiceResult<GetUserInfoDto>.Failure("Invalid Id");
 
             var user = await _repository.GetAsync(id);  
 
-            return user == null? null : new GetUserInfoDto(user.Email, user.Username, user.FullName);
+            return user == null? 
+                ServiceResult<GetUserInfoDto>.Failure("User was not found") :
+                ServiceResult<GetUserInfoDto>.Success("", new GetUserInfoDto(user.Email, user.Username, user.FullName)); 
         }
     }
 }

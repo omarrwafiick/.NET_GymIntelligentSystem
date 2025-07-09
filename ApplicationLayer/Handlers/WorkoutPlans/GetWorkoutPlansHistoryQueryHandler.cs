@@ -1,12 +1,8 @@
 ﻿ 
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Trainers;
-using DomainLayer.Entities;
-using MediatR;
 
 namespace ApplicationLayer.Queries.WorkoutPlans
 {
-    public class GetWorkoutPlansHistoryQueryHandler : IRequestHandler<GetWorkoutPlansHistoryQuery, List<GetWorkoutPlansDto>>
+    public class GetWorkoutPlansHistoryQueryHandler : IRequestHandler<GetWorkoutPlansHistoryQuery, ServiceResult<List<GetWorkoutPlansDto>>>
     { 
         private readonly IApplicationRepository<Member> _memberRepository; 
         public GetWorkoutPlansHistoryQueryHandler(
@@ -14,21 +10,23 @@ namespace ApplicationLayer.Queries.WorkoutPlans
         { 
             _memberRepository = memberRepository; 
         }
-        public async Task<List<GetWorkoutPlansDto>> Handle(GetWorkoutPlansHistoryQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<List<GetWorkoutPlansDto>>> Handle(GetWorkoutPlansHistoryQuery request, CancellationToken cancellationToken)
         {  
-            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return [];
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return ServiceResult< List < GetWorkoutPlansDto >>.Failure("Invalid Id/s");
 
             var member = await _memberRepository.GetAsync(memberId); 
 
-            if (member is null ) return [];
+            if (member is null ) return ServiceResult<List<GetWorkoutPlansDto>>.Failure("Member was not found");
 
-            return member.WorkoutPlans.Select(w => { 
+            var data = member.WorkoutPlans.Select(w => {
                 var endDate = new DateTime(w.StartDate.Year, w.StartDate.Month, w.DurationInDays);
                 return new GetWorkoutPlansDto(
                     w.PlanType, w.StartDate, endDate
                 );
             })
             .ToList();
+
+            return ServiceResult<List<GetWorkoutPlansDto>>.Success("", data);
         }
     }
 }

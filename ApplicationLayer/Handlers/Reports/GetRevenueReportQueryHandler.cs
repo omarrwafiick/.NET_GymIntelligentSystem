@@ -1,13 +1,8 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Members;
-using ApplicationLayer.Queries.Reports;
-using DomainLayer.Entities;
-using DomainLayer.Enums;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Reports
 {
-    public class GetRevenueReportQueryHandler : IRequestHandler<GetRevenueReportQuery, GetRevenueReportDto>
+    public class GetRevenueReportQueryHandler : IRequestHandler<GetRevenueReportQuery, ServiceResult<GetRevenueReportDto>>
     {
         private readonly IApplicationRepository<Member> _repository;
 
@@ -16,13 +11,13 @@ namespace ApplicationLayer.Handlers.Reports
             _repository = repository;
         }
 
-        public async Task<GetRevenueReportDto?> Handle(GetRevenueReportQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<GetRevenueReportDto>> Handle(GetRevenueReportQuery request, CancellationToken cancellationToken)
         {  
-            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return ServiceResult<GetRevenueReportDto>.Failure("Invalid Id");
 
             var member = await _repository.GetAsync(memberId);
 
-            if (member is null) return null;
+            if (member is null) return ServiceResult<GetRevenueReportDto>.Failure("Member was not found");
 
             var subscriptions = member.Subscriptions;
             var paymentHistory = member.PaymentHistory;
@@ -49,15 +44,17 @@ namespace ApplicationLayer.Handlers.Reports
                 .Count();
 
             return paymentHistory.Any() ?
-                new GetRevenueReportDto(
+                ServiceResult<GetRevenueReportDto>.Success("",
+                    new GetRevenueReportDto(
                       totalAmount,
                       subscriptions.Count(),
                       subscriptions.Where(s => s.IsActive()).Count(),
                       lastMonthRevenue,
                       canceledSubscriptionsThisMonth
-                )
+                    )
+                ) 
                 :
-                null;
+                ServiceResult<GetRevenueReportDto>.Failure("No payment history was found");
         }
     }
 }

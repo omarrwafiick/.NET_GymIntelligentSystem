@@ -1,11 +1,8 @@
-﻿using ApplicationLayer.Commands.Authenticartion;
-using ApplicationLayer.Contracts;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Authenticartion
 {
-    public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, bool>
+    public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, ServiceResult<bool>>
     {
         private readonly IApplicationRepository<User> _repository;
 
@@ -14,11 +11,13 @@ namespace ApplicationLayer.Handlers.Authenticartion
             _repository = repository;
         }
 
-        public async Task<bool> Handle(VerifyUserCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<bool>> Handle(VerifyUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetAsync(u => u.Email == request.Email);
 
-            return user != null; 
+            return user != null ?
+                ServiceResult<bool>.Success("User was authenticated successfully") :
+                ServiceResult<bool>.Failure("User was not authenticated"); 
         }
     }
 }

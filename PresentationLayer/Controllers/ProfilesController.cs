@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [AuthorizeRoles(["MEMBER","TRAINER"])]
     [Route("api/v1/users/profiles")]
     [ApiController]
     public class ProfilesController : ControllerBase
@@ -21,9 +22,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new UpdateProfileCommand(id, dto.Username, dto.Fullname);
             var result = await _mediator.Send(command);
-            return !result ?
-                NotFound("Profile couldn't be updated") :
-                NoContent(); 
+            return result.SuccessOrNot ?
+                Ok(result.Message) :
+                BadRequest(result.Message);
         }
 
         [HttpPost("{id}/change-password")]
@@ -31,9 +32,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new ChangePasswordCommand(id, dto.Password);
             var result = await _mediator.Send(command);
-            return !result ?
-                NotFound("Password couldn't be changed") :
-                Ok("Password was changed successfully");
+            return result.SuccessOrNot ?
+                Ok(result.Message) :
+                BadRequest(result.Message); ;
         }
 
         [HttpDelete("{accountid}")]
@@ -41,9 +42,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new DeleteAccountCommand(accountid);
             var result = await _mediator.Send(command);
-            return !result ?
-                NotFound("Account couldn't be deleted") :
-                NoContent();
+            return result.SuccessOrNot ?
+                Ok(result.Message) :
+                BadRequest(result.Message);
         }
     }
 }

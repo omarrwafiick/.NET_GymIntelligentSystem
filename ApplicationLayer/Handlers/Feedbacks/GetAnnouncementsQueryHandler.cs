@@ -1,14 +1,7 @@
 ﻿ 
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Feedbacks;
-using ApplicationLayer.Queries.Feedbacks;
-using DomainLayer.Entities;
-using DomainLayer.Enums;
-using MediatR; 
-
 namespace ApplicationLayer.Handlers.Feedbacks
 {
-    public class GetAnnouncementsQueryHandler : IRequestHandler<GetAnnouncementsQuery, List<GetAnnouncementDto>>
+    public class GetAnnouncementsQueryHandler : IRequestHandler<GetAnnouncementsQuery, ServiceResult<List<GetAnnouncementDto>>>
     {
         private readonly IApplicationRepository<Announcement> _repository;
 
@@ -17,7 +10,7 @@ namespace ApplicationLayer.Handlers.Feedbacks
             _repository = repository;
         }
 
-        public async Task<List<GetAnnouncementDto>> Handle(GetAnnouncementsQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<List<GetAnnouncementDto>>> Handle(GetAnnouncementsQuery request, CancellationToken cancellationToken)
         {
             var type = request.AudienceType;
             var announcements = new List<Announcement>();
@@ -37,8 +30,10 @@ namespace ApplicationLayer.Handlers.Feedbacks
                     break;
             }
             return announcements.Any() ?
-                announcements.Select(a => new GetAnnouncementDto(a.Title, a.Message, a.SentAt)).ToList()
-                : [];
+                ServiceResult< List < GetAnnouncementDto >>.Success("",
+                    announcements.Select(a => new GetAnnouncementDto(a.Title, a.Message, a.SentAt)).ToList()
+                ) :
+                ServiceResult< List < GetAnnouncementDto >>.Failure("No announcement was found"); 
         }
     }
 }

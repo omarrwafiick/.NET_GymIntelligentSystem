@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [AuthorizeRoles(["MEMBER", "ADMIN"])]
     [Route("api/v1/subscriptions")]
     [ApiController]
     public class SubscriptionsController : ControllerBase
@@ -25,9 +26,9 @@ namespace PresentationLayer.Controllers
                 dto.Amount, dto.Currency, dto.PaymentMethod, dto.Description
             );
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Subscription request couldn't be fulfilled at the moment") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpPost("cancel/{subscribtionid}")]
@@ -35,9 +36,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new CancelSubscriptionCommand(subscribtionid);
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Subscription cancellation request couldn't be fulfilled at the moment") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpPost("upgrade/{memberid}/{subscribtionid}")]
@@ -48,9 +49,9 @@ namespace PresentationLayer.Controllers
                 dto.Amount, dto.Currency, dto.PaymentMethod, dto.Description
             );
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Subscription upgrade request couldn't be fulfilled at the moment") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpGet("member/active/{memberid}")]
@@ -58,9 +59,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetActiveSubscriptionsQuery(memberid);
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound($"No active subscription was found for member with id : {memberid}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("member/payment-history/{memberid}")]
@@ -68,9 +69,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetPaymentHistoryQuery(memberid);
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound($"No payment history was found for member with id : {memberid}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message);
         }
     }
 }

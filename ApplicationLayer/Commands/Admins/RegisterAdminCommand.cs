@@ -1,4 +1,4 @@
-﻿using MediatR; 
+﻿ 
 
 namespace ApplicationLayer.Commands.Admins
 {
@@ -7,5 +7,5 @@ namespace ApplicationLayer.Commands.Admins
         string Username,
         string Email,
         string Password
-    ) : IRequest<Guid?>;
+    ) : IRequest<ServiceResult<Guid>>;
 }

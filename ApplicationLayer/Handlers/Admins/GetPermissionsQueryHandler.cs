@@ -1,12 +1,7 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Admins; 
-using ApplicationLayer.Queries.Admins;
-using DomainLayer.Entities;
-using MediatR;
-
+﻿ 
 namespace ApplicationLayer.Handlers.Admins
 {
-    public class GetPermissionsQueryHandler : IRequestHandler<GetPermissionsQuery, List<GetPermissionDto>>
+    public class GetPermissionsQueryHandler : IRequestHandler<GetPermissionsQuery, ServiceResult<List<GetPermissionDto>>>
     {
         private readonly IApplicationRepository<Permission> _repository;
 
@@ -15,12 +10,16 @@ namespace ApplicationLayer.Handlers.Admins
             _repository = repository;
         }
 
-        public async Task<List<GetPermissionDto>> Handle(GetPermissionsQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<List<GetPermissionDto>>> Handle(GetPermissionsQuery request, CancellationToken cancellationToken)
         {
             var permissions = await _repository.GetAllAsync();
-            return permissions.Any() ? permissions.Select(
-                p => new GetPermissionDto(p.Id, p.PermissionName.ToString())).ToList()
-            : [];
+            return permissions.Any() ?
+            ServiceResult<List<GetPermissionDto>>.Success("", 
+                permissions.Select(
+                    p => new GetPermissionDto(p.Id, p.PermissionName.ToString()))
+                    .ToList()
+            ):
+            ServiceResult<List<GetPermissionDto>>.Failure("No persmission was found");
         }
     }
 }

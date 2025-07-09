@@ -1,12 +1,7 @@
-﻿using ApplicationLayer.Contracts; 
-using ApplicationLayer.Dtos.Subscriptions;
-using ApplicationLayer.Queries.Admins;
-using DomainLayer.Entities;
-using MediatR; 
-
+﻿ 
 namespace ApplicationLayer.Handlers.Admins
 {
-    public class GetSubscriptionsQueryHandler : IRequestHandler<GetSubscriptionsQuery, List<GetSubscriptionDto>>
+    public class GetSubscriptionsQueryHandler : IRequestHandler<GetSubscriptionsQuery, ServiceResult<List<GetSubscriptionDto>>>
     {
         private readonly IApplicationRepository<Subscription> _repository;
 
@@ -15,14 +10,18 @@ namespace ApplicationLayer.Handlers.Admins
             _repository = repository;
         }
 
-        public async Task<List<GetSubscriptionDto>> Handle(GetSubscriptionsQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<List<GetSubscriptionDto>>> Handle(GetSubscriptionsQuery request, CancellationToken cancellationToken)
         {
             var subscriptions = await _repository.GetAllAsync();
-            return subscriptions.Any() ? subscriptions.Select(
-                s => new GetSubscriptionDto(
-                    s.MemberId, s.PlanType, s.StartDate, s.EndDate, 
-                    (s.EndDate.Day - s.StartDate.Day))).ToList()
-            : [];
+
+            return subscriptions.Any() ?
+                ServiceResult<List<GetSubscriptionDto>>.Success("",
+                     subscriptions.Select(
+                        s => new GetSubscriptionDto(
+                            s.MemberId, s.PlanType, s.StartDate, s.EndDate,
+                            (s.EndDate.Day - s.StartDate.Day))).ToList()
+                ) :
+                ServiceResult<List<GetSubscriptionDto>>.Failure("No subscription was found"); 
         }
     }
 }

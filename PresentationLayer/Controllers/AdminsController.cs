@@ -2,10 +2,11 @@
 using ApplicationLayer.Dtos.Admins;
 using ApplicationLayer.Queries.Admins; 
 using MediatR; 
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc; 
 
 namespace PresentationLayer.Controllers
 {
+    [AuthorizeRoles("ADMIN")]
     [Route("api/v1/admins")]
     [ApiController]
     public class AdminsController : ControllerBase
@@ -19,20 +20,20 @@ namespace PresentationLayer.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterAdminDto dto)
         {
             var command = new RegisterAdminCommand(dto.FullName, dto.Username, dto.Email, dto.Password);
-            var result = await _mediator.Send(command);
-            return result.ToString() is null ?
-                NotFound("Account couldn't be created") :
-                Ok(new { resourceId = result });
+            var result = await _mediator.Send(command); 
+            return result.SuccessOrNot ?
+            Ok(new { resourceId = result.Data }) :
+            BadRequest(result.Message);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
             var query = new GetAdminByIdQuery(id);
-            var result = await _mediator.Send(query);
-            return result is null ?
-                NotFound($"No admin was found using this id {id}") :
-                Ok(new { data = result });
+            var result = await _mediator.Send(query);  
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message); 
         } 
 
         [HttpPost("permission/{adminid}/{permissionid}")]
@@ -40,19 +41,19 @@ namespace PresentationLayer.Controllers
         {
             var command = new AddPermissionCommand(adminid, permissionid);
             var result = await _mediator.Send(command);
-            return !result ?
-                NotFound("Permission couldn't be added") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpGet("permissions/{adminid}")]
         public async Task<IActionResult> GetPermissions([FromRoute] string adminid)
         {
             var query = new GetPermissionsQuery(adminid);
-            var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("No permission was found") :
-                Ok(new {data = result });
+            var result = await _mediator.Send(query); 
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("members")]
@@ -60,9 +61,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetMembersQuery();
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("No member was found") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("trainers")]
@@ -70,9 +71,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetTrainersQuery();
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("No trainer was found") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("subscriptions")]
@@ -80,9 +81,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetSubscriptionsQuery();
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("No subscription was found") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
     }
 }

@@ -22,9 +22,9 @@ namespace InfrastructureLayer.Implementations.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.Username!),
-                new Claim("Role", role)
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.GivenName, user.Username!),
+                new Claim(ClaimTypes.Role, role.ToUpper())
             };
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);

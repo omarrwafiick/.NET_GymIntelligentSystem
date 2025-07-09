@@ -1,13 +1,8 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Recommendations;
-using ApplicationLayer.Queries.Recommendations;
-using DomainLayer.Entities;
-using DomainLayer.Enums;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Recommendations
 {
-    public class GenerateSmartNutritionPlanQueryHandler : IRequestHandler<GenerateSmartNutritionPlanQuery, SmartNutritionPlanDto>
+    public class GenerateSmartNutritionPlanQueryHandler : IRequestHandler<GenerateSmartNutritionPlanQuery, ServiceResult<SmartNutritionPlanDto>>
     {
         private readonly IApplicationRepository<Member> _repository;
 
@@ -16,13 +11,13 @@ namespace ApplicationLayer.Handlers.Recommendations
             _repository = repository;
         }
  
-        public async Task<SmartNutritionPlanDto> Handle(GenerateSmartNutritionPlanQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<SmartNutritionPlanDto>> Handle(GenerateSmartNutritionPlanQuery request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.MemberId, out Guid trainerId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid trainerId)) return ServiceResult<SmartNutritionPlanDto>.Failure("Invalid Id");
 
             var member = await _repository.GetAsync(trainerId);
 
-            if (member is null) return null;
+            if (member is null) return ServiceResult<SmartNutritionPlanDto>.Failure("Member was not found");
 
             float bmr = Bmr(
                 member.WeightKg, member.HeightCm, GetAge(member.DateOfBirth), 
@@ -44,7 +39,7 @@ namespace ApplicationLayer.Handlers.Recommendations
 
             string notes = $"Goal: {member.Goal}. Maintain {calories} kcal/day with 30/50/20 macro split.";
 
-            return new SmartNutritionPlanDto(
+            var data = new SmartNutritionPlanDto(
                 calories,
                 protein,
                 carbs,
@@ -53,6 +48,8 @@ namespace ApplicationLayer.Handlers.Recommendations
                 30,
                 DateTime.Today
             );
+
+            return ServiceResult<SmartNutritionPlanDto>.Success("", data); 
         }
 
         private float Bmr(float weightKg, float heightCm, int ageYears, bool isMale)

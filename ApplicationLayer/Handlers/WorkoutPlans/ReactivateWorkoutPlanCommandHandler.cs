@@ -1,10 +1,8 @@
-﻿using ApplicationLayer.Contracts;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Commands.WorkoutPlans
 {
-    public class DeactivateWorkoutPlanCommandHandler : IRequestHandler<DeactivateWorkoutPlanCommand, bool>
+    public class DeactivateWorkoutPlanCommandHandler : IRequestHandler<DeactivateWorkoutPlanCommand, ServiceResult<bool>>
     {
         private readonly IApplicationRepository<WorkoutPlan> _repository;
 
@@ -13,17 +11,19 @@ namespace ApplicationLayer.Commands.WorkoutPlans
             _repository = repository;
         }
 
-        public async Task<bool> Handle(DeactivateWorkoutPlanCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<bool>> Handle(DeactivateWorkoutPlanCommand request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.WorkoutPlanId, out Guid workoutPlanId)) return false;
+            if (!Guid.TryParse(request.WorkoutPlanId, out Guid workoutPlanId)) return ServiceResult<bool>.Failure("Invalid Id/s");
 
             var workoutPlan = await _repository.GetAsync(workoutPlanId);
 
-            if (workoutPlan == null) return false;
+            if (workoutPlan == null) return ServiceResult<bool>.Failure("Workout plan was not found");
 
             workoutPlan.Deactivate();
             
-            return await _repository.UpdateAsync(workoutPlan);
+            return await _repository.UpdateAsync(workoutPlan) ?
+                ServiceResult<bool>.Success("Workout plan was deactivated successfully") :
+                ServiceResult<bool>.Failure("Failed to deactivate the workout plan");
         }
     }
 }

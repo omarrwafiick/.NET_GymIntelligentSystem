@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+
+    [AuthorizeRoles("MEMBER")]
     [Route("api/v1/feedbacks")]
     [ApiController]
     public class FeedbacksController : ControllerBase
@@ -21,9 +23,9 @@ namespace PresentationLayer.Controllers
         { 
             var command = new ContactSupportCommand(dto.Message, dto.Subject, dto.UserId);
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Something went wrong while contacting support") :
-                Ok("Message was sent successfully to support");
+            return result.SuccessOrNot ?
+                NoContent():
+                BadRequest(result.Message);
         }
 
         [HttpPost("announcement")]
@@ -31,9 +33,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new CreateAnnouncementCommand(dto.Title, dto.Message, dto.Audience);
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Something went wrong while creating an announcement") :
-                Ok("Announcement was created successfuly");
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpGet("announcements/{userid}/{audience}")]
@@ -41,9 +43,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetAnnouncementsQuery(userid, audience);
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("No Announcement was found") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new {data = result .Data}) :
+                BadRequest(result.Message);
         }
 
         [HttpPost("feedback")]
@@ -51,9 +53,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new CreateFeedbackCommand(dto.UserId, dto.Rating, dto.Comment, dto.TargetType, dto.TargetId);
             var result = await _mediator.Send(command);
-            return !result ?
-                NotFound("Feedback couldn't be created") :
-                Ok("Feedback was created successfully");
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
     }
 }

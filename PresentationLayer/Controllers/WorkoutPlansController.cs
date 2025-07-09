@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [AuthorizeRoles("MEMBER")]
     [Route("api/v1/workout-plans")]
     [ApiController]
     public class WorkoutPlansController : ControllerBase
@@ -24,9 +25,9 @@ namespace PresentationLayer.Controllers
                 memberid, trainerid, dto.PlanType, dto.StartDate, dto.DurationInDays, dto.FocusArea
             );
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Workout plan couldn't be created") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         } 
 
         [HttpPost("{planid}/add-session")]
@@ -36,9 +37,9 @@ namespace PresentationLayer.Controllers
                planid, dto.ScheduledDate, dto.Notes
             );
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Workout session couldn't be created") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpGet("{memberid}/sessions")]
@@ -46,19 +47,19 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetWorkoutSessionsQuery(memberid);
             var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("No workout session was found") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+               Ok(new { data = result }) :
+               BadRequest(result.Message);
         }
 
         [HttpGet("{memberid}/history")]
         public async Task<IActionResult> GetWorkoutPlansHistory([FromRoute] string memberid)
         {
             var query = new GetWorkoutPlansHistoryQuery(memberid);
-            var result = await _mediator.Send(query);
-            return !result.Any() ?
-                NotFound("No workout plan was found") :
-                Ok(new { data = result });
+            var result = await _mediator.Send(query); 
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message);
         }
 
         [HttpPut("{workoutplanid}/reactivate")]
@@ -66,9 +67,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new ReactivateWorkoutPlanCommand(workoutplanid);
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Workout session couldn't be reactivated") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpPut("{workoutplanid}/deactivate")]
@@ -76,9 +77,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new DeactivateWorkoutPlanCommand(workoutplanid);
             var result = await _mediator.Send(command);
-            return !result ?
-                BadRequest("Workout session couldn't be deactivated") :
-                NoContent();
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
     }
 }

@@ -1,13 +1,7 @@
-﻿
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Subscriptions;
-using ApplicationLayer.Queries.Subscriptions;
-using DomainLayer.Entities;
-using MediatR;
-
+﻿ 
 namespace ApplicationLayer.Handler.Subscriptions
 {
-    public class GetPaymentHistoryQueryHandler : IRequestHandler<GetPaymentHistoryQuery, List<GetPaymentHistoryDto>>
+    public class GetPaymentHistoryQueryHandler : IRequestHandler<GetPaymentHistoryQuery, ServiceResult<List<GetPaymentHistoryDto>>>
     {
         private readonly IApplicationRepository<Member> _repository;
 
@@ -16,17 +10,18 @@ namespace ApplicationLayer.Handler.Subscriptions
             _repository = repository;
         }
 
-        public async Task<List<GetPaymentHistoryDto>> Handle(GetPaymentHistoryQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<List<GetPaymentHistoryDto>>> Handle(GetPaymentHistoryQuery request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return [];
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return ServiceResult<List<GetPaymentHistoryDto>>.Failure("Invalid Id");
 
             var member = await _repository.GetAsync(memberId);
 
-            if (member is null) return [];
+            if (member is null) return ServiceResult<List<GetPaymentHistoryDto>>.Failure("Member was not found");
 
-            return member.PaymentHistory.Select(p => new GetPaymentHistoryDto(
+            return ServiceResult<List<GetPaymentHistoryDto>>.Success("", member.PaymentHistory.Select(p => new GetPaymentHistoryDto(
                     p.SubscriptionId, p.Amount, p.Currency, p.PaymentMethod, p.PaidAt, p.Description
-            )).ToList();
+                )).ToList()
+            );
         }
     }
 }

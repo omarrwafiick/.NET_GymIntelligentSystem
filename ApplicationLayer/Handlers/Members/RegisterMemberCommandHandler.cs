@@ -1,12 +1,7 @@
-﻿using ApplicationLayer.Commands.Members;
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Helpers;
-using DomainLayer.Entities;
-using DomainLayer.Enums;
-using MediatR;
+﻿ 
 namespace ApplicationLayer.Handlers.Members
 {
-    public class RegisterMemberCommandHandler : IRequestHandler<RegisterMemberCommand, Guid?>
+    public class RegisterMemberCommandHandler : IRequestHandler<RegisterMemberCommand, ServiceResult<Guid>>
     {
         private readonly IApplicationRepository<Member> _repository;
 
@@ -15,12 +10,12 @@ namespace ApplicationLayer.Handlers.Members
             _repository = repository;
         }
 
-        public async Task<Guid?> Handle(RegisterMemberCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<Guid>> Handle(RegisterMemberCommand request, CancellationToken cancellationToken)
         { 
             var member = await _repository.GetAsync(u => u.Email == request.Email);
 
             if (member is not null)
-                return null;
+                return ServiceResult<Guid>.Failure("Member was not found");
 
             var hashedPassword = SecurityHelpers.HashPassword(request.Password);
 
@@ -28,14 +23,11 @@ namespace ApplicationLayer.Handlers.Members
                     request.FullName, request.Username, request.Email, hashedPassword,
                     request.HeightCm, request.WeightKg, request.Goal, request.DateOfBirth, 
                     request.IsMale ? Gender.MALE : Gender.FEMALE
-            );
+            ); 
 
-            var result = await _repository.CreateAsync(member);
-
-            if (!result)
-                return null; 
-
-            return member.Id;
+            return await _repository.CreateAsync(member) ?
+                ServiceResult<Guid>.Success("Member was created successfully", member.Id) :
+                ServiceResult<Guid>.Failure("Member could't be created");
         }
     }
 

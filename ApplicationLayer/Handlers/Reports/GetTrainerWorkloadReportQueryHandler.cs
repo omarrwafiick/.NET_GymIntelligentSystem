@@ -1,12 +1,8 @@
-﻿using ApplicationLayer.Contracts; 
-using ApplicationLayer.Dtos.Trainers;
-using ApplicationLayer.Queries.Reports;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Reports
 {
-    public class GetTrainerWorkloadReportQueryHandler : IRequestHandler<GetTrainerWorkloadReportQuery, GetTrainerWorkloadReportDto>
+    public class GetTrainerWorkloadReportQueryHandler : IRequestHandler<GetTrainerWorkloadReportQuery, ServiceResult<GetTrainerWorkloadReportDto>>
     {
         private readonly IApplicationRepository<Trainer> _repository;
 
@@ -15,13 +11,13 @@ namespace ApplicationLayer.Handlers.Reports
             _repository = repository;
         }
 
-        public async Task<GetTrainerWorkloadReportDto> Handle(GetTrainerWorkloadReportQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<GetTrainerWorkloadReportDto>> Handle(GetTrainerWorkloadReportQuery request, CancellationToken cancellationToken)
         { 
-            if (!Guid.TryParse(request.TrainerId, out Guid trainerId)) return null; 
+            if (!Guid.TryParse(request.TrainerId, out Guid trainerId)) return ServiceResult<GetTrainerWorkloadReportDto>.Failure("Invalid Id");
 
             var trainer = await _repository.GetAsync(trainerId);
 
-            if (trainer is null) return null;
+            if (trainer is null) return ServiceResult<GetTrainerWorkloadReportDto>.Failure("Trainer was not found");
 
             var memebersAssigned = trainer.MemberAssignments;
             var workoutPlans = trainer.WorkoutPlans;
@@ -35,13 +31,15 @@ namespace ApplicationLayer.Handlers.Reports
 
             var SessionsThisMonth = sessions.Where(s => s.ScheduledDate >= startOfCurrentMonth && s.ScheduledDate <= now).Count();
             var ActiveWorkoutPlans = workoutPlans.Where(w => w.StartDate < now).Count();
-            
-            return new GetTrainerWorkloadReportDto(
+
+            var report = new GetTrainerWorkloadReportDto(
                 memebersAssigned.Count(),
                 ActiveWorkoutPlans,
                 SessionsThisMonth,
                 progressReportsSubmited.Count()
             );
+
+            return ServiceResult<GetTrainerWorkloadReportDto>.Success("", report);
         }
     }
 }

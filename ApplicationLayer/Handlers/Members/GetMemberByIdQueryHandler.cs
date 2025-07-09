@@ -1,12 +1,8 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Members;
-using ApplicationLayer.Queries.Members;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Members
 {
-    public class GetMemberByIdQueryHandler : IRequestHandler<GetMemberByIdQuery, GetMemeberDto>
+    public class GetMemberByIdQueryHandler : IRequestHandler<GetMemberByIdQuery, ServiceResult<GetMemeberDto>>
     {
         private readonly IApplicationRepository<Member> _repository;
 
@@ -15,16 +11,17 @@ namespace ApplicationLayer.Handlers.Members
             _repository = repository;
         }
 
-        public async Task<GetMemeberDto> Handle(GetMemberByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<GetMemeberDto>> Handle(GetMemberByIdQuery request, CancellationToken cancellationToken)
         { 
-            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return ServiceResult<GetMemeberDto>.Failure("Invalid Id");
 
             var member = await _repository.GetAsync(memberId);
 
-            if (member is null) return null;
+            if (member is null) return ServiceResult<GetMemeberDto>.Failure("Member was not found");
 
-            return new GetMemeberDto(member.FullName, member.Username, member.Email, 
-                member.HeightCm, member.WeightKg, member.Goal, member.DateOfBirth);
+            return ServiceResult<GetMemeberDto>.Success("",
+                new GetMemeberDto(member.FullName, member.Username, member.Email,
+                    member.HeightCm, member.WeightKg, member.Goal, member.DateOfBirth));  
         }
     }
 }

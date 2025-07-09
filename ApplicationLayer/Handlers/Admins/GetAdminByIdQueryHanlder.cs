@@ -1,12 +1,8 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Admins;
-using ApplicationLayer.Queries.Admins;
-using DomainLayer.Entities;
-using MediatR; 
+﻿ 
 
 namespace ApplicationLayer.Handlers.Admins
 {
-    public class GetAdminByIdQueryHanlder : IRequestHandler<GetAdminByIdQuery, GetAdminDto>
+    public class GetAdminByIdQueryHanlder : IRequestHandler<GetAdminByIdQuery, ServiceResult<GetAdminDto>>
     {
         private readonly IApplicationRepository<Admin> _repository;
 
@@ -15,12 +11,14 @@ namespace ApplicationLayer.Handlers.Admins
             _repository = repository;
         }
 
-        public async Task<GetAdminDto> Handle(GetAdminByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<GetAdminDto>> Handle(GetAdminByIdQuery request, CancellationToken cancellationToken)
         { 
-            if (!Guid.TryParse(request.AdminId, out Guid adminId)) return null;
+            if (!Guid.TryParse(request.AdminId, out Guid adminId)) return ServiceResult<GetAdminDto>.Failure("Invalid Id");
 
             var admin = await _repository.GetAsync(adminId);
-            return admin is not null ? new GetAdminDto(admin.FullName, admin.Username, admin.Email) : null;
+            return admin is not null ?
+                ServiceResult<GetAdminDto>.Success("", new GetAdminDto(admin.FullName, admin.Username, admin.Email)) : 
+                ServiceResult<GetAdminDto>.Failure("No admin was found");
         }
     }
 }

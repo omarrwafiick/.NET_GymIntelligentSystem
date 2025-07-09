@@ -1,12 +1,8 @@
-﻿
-using ApplicationLayer.Commands.Subscriptions;
-using ApplicationLayer.Contracts;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handler.Subscriptions
 {
-    public class SubscriptionPurchaseCommandHandler : IRequestHandler<SubscriptionPurchaseCommand, bool>
+    public class SubscriptionPurchaseCommandHandler : IRequestHandler<SubscriptionPurchaseCommand, ServiceResult<bool>>
     {
         private readonly IApplicationRepository<Subscription> _repository;
         private readonly IApplicationRepository<Member> _memberRepository;
@@ -18,14 +14,14 @@ namespace ApplicationLayer.Handler.Subscriptions
             _memberRepository = memberRepository;
         }
 
-        public async Task<bool> Handle(SubscriptionPurchaseCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<bool>> Handle(SubscriptionPurchaseCommand request, CancellationToken cancellationToken)
         {
             if (!Guid.TryParse(request.MemberId, out Guid memberId)
-                || !Guid.TryParse(request.SubscriptionId, out Guid subscriptionId)) return false;
+                || !Guid.TryParse(request.SubscriptionId, out Guid subscriptionId)) return ServiceResult<bool>.Failure("Invalid Id");
 
             var member = await _memberRepository.GetAsync(memberId);
 
-            if (member == null) return false;
+            if (member == null) return ServiceResult<bool>.Failure("Member was not found");
 
             var subscription = Subscription.Factory(memberId, request.PlanType, request.StartDate, request.DurationInDays);
            
@@ -35,7 +31,9 @@ namespace ApplicationLayer.Handler.Subscriptions
                 memberId, subscription.Id, request.Amount, request.CurrencyType, 
                 request.PaymentMethod ,request.StartDate, request.Description));
 
-            return await _memberRepository.UpdateAsync(member);
+            return await _memberRepository.UpdateAsync(member) ?
+                ServiceResult<bool>.Success("Subscription was purchased successfully") :
+                ServiceResult<bool>.Failure("Failed to purchase the subscription");
         }
     }
 }

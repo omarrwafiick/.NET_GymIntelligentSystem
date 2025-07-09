@@ -1,12 +1,7 @@
-﻿using ApplicationLayer.Contracts; 
-using ApplicationLayer.Dtos.Trainers;
-using ApplicationLayer.Queries.Admins;
-using DomainLayer.Entities;
-using MediatR;
-
+﻿ 
 namespace ApplicationLayer.Handlers.Admins
 {
-    public class GetTrainersQueryHandler : IRequestHandler<GetTrainersQuery, List<GetTrainerDto>>
+    public class GetTrainersQueryHandler : IRequestHandler<GetTrainersQuery, ServiceResult<List<GetTrainerDto>>>
     {
         private readonly IApplicationRepository<Trainer> _repository;
 
@@ -15,12 +10,16 @@ namespace ApplicationLayer.Handlers.Admins
             _repository = repository;
         }
 
-        public async Task<List<GetTrainerDto>> Handle(GetTrainersQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<List<GetTrainerDto>>> Handle(GetTrainersQuery request, CancellationToken cancellationToken)
         {
             var trainers = await _repository.GetAllAsync();
-            return trainers.Any() ? trainers.Select(
-                t => new GetTrainerDto(t.FullName, t.Username, t.Email, t.Speciality)).ToList()
-            : [];
+
+            return trainers.Any() ?
+                ServiceResult< List < GetTrainerDto >>.Success("",
+                      trainers.Select(
+                        t => new GetTrainerDto(t.FullName, t.Username, t.Email, t.Speciality)).ToList()
+                ) :
+                ServiceResult< List < GetTrainerDto >>.Failure("No trainer was found");  
         }
     }
 }

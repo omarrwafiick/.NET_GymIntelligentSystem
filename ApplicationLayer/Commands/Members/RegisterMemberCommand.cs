@@ -1,6 +1,4 @@
 ﻿ 
-using DomainLayer.Enums;
-using MediatR;
 
 namespace ApplicationLayer.Commands.Members
 {
@@ -14,5 +12,5 @@ namespace ApplicationLayer.Commands.Members
     Goal Goal,
     bool IsMale,  
     DateOnly DateOfBirth
-    ) : IRequest<Guid?>;
+    ) : IRequest<ServiceResult<Guid>>;
 }

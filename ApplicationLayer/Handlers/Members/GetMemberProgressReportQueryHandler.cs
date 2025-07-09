@@ -1,12 +1,7 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Members;
-using ApplicationLayer.Queries.Members;
-using DomainLayer.Entities;
-using MediatR;
-
+﻿ 
 namespace ApplicationLayer.Handlers.Members
 {
-    public class GetMemberProgressReportQueryHandler : IRequestHandler<GetMemberProgressReportQuery, GetProgressReportDto>
+    public class GetMemberProgressReportQueryHandler : IRequestHandler<GetMemberProgressReportQuery, ServiceResult<GetProgressReportDto>>
     {
         private readonly IApplicationRepository<Member> _repository;
 
@@ -15,18 +10,19 @@ namespace ApplicationLayer.Handlers.Members
             _repository = repository;
         }
 
-        public async Task<GetProgressReportDto> Handle(GetMemberProgressReportQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<GetProgressReportDto>> Handle(GetMemberProgressReportQuery request, CancellationToken cancellationToken)
         { 
-            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return ServiceResult<GetProgressReportDto>.Failure("Invalid id");
 
             var member = await _repository.GetAsync(memberId);
 
-            if (member is null) return null;
+            if (member is null) return ServiceResult<GetProgressReportDto>.Failure("Member was not found");
 
             var progressReport = member.ProgressReports.LastOrDefault();
 
-            return new GetProgressReportDto(progressReport.WeightKg, progressReport.BodyFatPercentage, 
-                progressReport.MuscleMass, progressReport.TrainerNotes);
+            return ServiceResult<GetProgressReportDto>.Success("",
+                new GetProgressReportDto(progressReport.WeightKg, progressReport.BodyFatPercentage,
+                    progressReport.MuscleMass, progressReport.TrainerNotes));
         }
     }
 }

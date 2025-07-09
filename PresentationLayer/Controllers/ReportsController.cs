@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
-    //TODOS : verify role = admin
+    [AuthorizeRoles("ADMIN")]
     [Route("api/v1/admin/reports/stats")]
     [ApiController]
     public class ReportsController : ControllerBase
@@ -21,9 +21,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetMemberStatsReportQuery(memberid);
             var result = await _mediator.Send(query);
-            return result is null ?
-                NotFound($"No stats was found for memeber with id : {memberid}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("revenue/{memberid}")]
@@ -31,9 +31,9 @@ namespace PresentationLayer.Controllers
         { 
             var query = new GetRevenueReportQuery(memberid);
             var result = await _mediator.Send(query);
-            return result is null ?
-                NotFound($"No revenue report was found for memeber with id : {memberid}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("trainers/{trainerid}")]
@@ -41,9 +41,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GetTrainerWorkloadReportQuery(trainerid);
             var result = await _mediator.Send(query);
-            return result is null ?
-                NotFound($"No work load was found for trainer with id : {trainerid}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message);
         }
     }
 }

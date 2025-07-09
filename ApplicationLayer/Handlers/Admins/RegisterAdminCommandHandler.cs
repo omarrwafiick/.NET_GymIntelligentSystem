@@ -1,12 +1,8 @@
-﻿using ApplicationLayer.Commands.Admins;
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Helpers;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Admins
 {
-    internal class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand, Guid?>
+    internal class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand, ServiceResult<Guid>>
     {
         private readonly IApplicationRepository<Admin> _repository;
         private readonly IApplicationRepository<Permission> _permissionsRepository;
@@ -21,12 +17,12 @@ namespace ApplicationLayer.Handlers.Admins
             _adminPermissionsRepository = adminPermissionsRepository;
         }
 
-        public async Task<Guid?> Handle(RegisterAdminCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<Guid>> Handle(RegisterAdminCommand request, CancellationToken cancellationToken)
         {
             var admin = await _repository.GetAsync(u => u.Email == request.Email);
 
             if (admin is not null)
-                return null;
+                return ServiceResult<Guid>.Failure("User is already exists");
 
             var hashedPassword = SecurityHelpers.HashPassword(request.Password);
 
@@ -34,8 +30,8 @@ namespace ApplicationLayer.Handlers.Admins
 
             var result = await _repository.CreateAsync(admin);
 
-            if(!result) 
-                return null;
+            if(!result)
+                return ServiceResult<Guid>.Failure("Failed to create new user please try again");
 
             var readPermission = await _permissionsRepository.GetAsync(
                 p => p.PermissionName == DomainLayer.Enums.PermissionType.Read);
@@ -44,9 +40,9 @@ namespace ApplicationLayer.Handlers.Admins
                 AdminPermission.Factory(admin.Id, readPermission.Id)); 
 
             if(!adminPermissionResult)
-                return null;
+                return ServiceResult<Guid>.Failure("Failed to asign permission to user please contact support"); 
 
-            return admin.Id;
+            return ServiceResult<Guid>.Success("Failed to create new user please try again", admin.Id);
         } 
     }
 }

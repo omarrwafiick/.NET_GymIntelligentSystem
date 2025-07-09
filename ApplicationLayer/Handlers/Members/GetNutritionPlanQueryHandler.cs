@@ -1,13 +1,8 @@
 ﻿ 
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Members;
-using ApplicationLayer.Queries.Members;
-using DomainLayer.Entities;
-using MediatR;
 
 namespace ApplicationLayer.Handlers.Members
 {
-    public class GetNutritionPlanQueryHandler : IRequestHandler<GetNutritionPlansQuery, List<GetNutritionPlanDto>>
+    public class GetNutritionPlanQueryHandler : IRequestHandler<GetNutritionPlansQuery, ServiceResult<List<GetNutritionPlanDto>>>
     {
         private readonly IApplicationRepository<NutritionPlan> _repository;
         private readonly IApplicationRepository<Member> _memberRepository;
@@ -19,19 +14,19 @@ namespace ApplicationLayer.Handlers.Members
             _repository = repository;
             _memberRepository = memberRepository;
         }
-          
-        async Task<List<GetNutritionPlanDto>> IRequestHandler<GetNutritionPlansQuery, List<GetNutritionPlanDto>>.Handle(GetNutritionPlansQuery request, CancellationToken cancellationToken)
+
+        public async Task<ServiceResult<List<GetNutritionPlanDto>>> Handle(GetNutritionPlansQuery request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return ServiceResult<List<GetNutritionPlanDto>>.Failure("Invalid Id");
 
             var member = await _memberRepository.GetAsync(memberId);
 
-            if (member is null) return null;
+            if (member is null) return ServiceResult<List<GetNutritionPlanDto>>.Failure("Member was not found");
 
             var nutritionPlan = member.NutritionPlans;
 
-            return nutritionPlan.Select(
-                p => new GetNutritionPlanDto(p.CaloriesPerDay, p.ProteinGrams, p.CarbsGrams, p.FatsGrams, p.PlanNotes)).ToList();
+            return ServiceResult<List<GetNutritionPlanDto>>.Success("", nutritionPlan.Select(
+                p => new GetNutritionPlanDto(p.CaloriesPerDay, p.ProteinGrams, p.CarbsGrams, p.FatsGrams, p.PlanNotes)).ToList()); 
         }
     }
 }

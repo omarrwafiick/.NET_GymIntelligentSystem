@@ -20,11 +20,11 @@ namespace PresentationLayer.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var command = new LoginCommand(dto.Email, dto.Password);
-            var tokenResult = await _mediator.Send(command);
-            HttpContext.Response.Cookies.Append("token", tokenResult);
-            return tokenResult is null ? 
-                NotFound("User password/email is incorrect") : 
-                Ok(new {token = tokenResult });
+            var result = await _mediator.Send(command);
+            HttpContext.Response.Cookies.Append("token", result.Data);
+            return result.SuccessOrNot ?
+                Ok(new { token = result.Data }) :
+                BadRequest(result.Message);
         }
          
         [HttpGet("info/{id}")]
@@ -32,9 +32,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new GetInfoQuery(id);
             var result = await _mediator.Send(command);
-            return result is null ?
-                NotFound("User id is incorrect") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpPost("verify")]
@@ -42,9 +42,9 @@ namespace PresentationLayer.Controllers
         {
             var command = new VerifyUserCommand(email);
             var result = await _mediator.Send(command);
-            return !result ?
-                NotFound("User email is incorrect") :
-                Ok();
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpPost("logout")]

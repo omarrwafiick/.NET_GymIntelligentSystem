@@ -1,14 +1,8 @@
-﻿
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Recommendations;
-using ApplicationLayer.Queries.Recommendations;
-using DomainLayer.Entities;
-using DomainLayer.Enums;
-using MediatR; 
+﻿ 
 
 namespace ApplicationLayer.Handlers.Recommendations
 {
-    public class GenerateSmartWorkoutPlanQueryHandler : IRequestHandler<GenerateSmartWorkoutPlanQuery, SmartWorkoutPlanDto>
+    public class GenerateSmartWorkoutPlanQueryHandler : IRequestHandler<GenerateSmartWorkoutPlanQuery, ServiceResult<SmartWorkoutPlanDto>>
     {
         private readonly IApplicationRepository<Member> _repository;
 
@@ -17,13 +11,13 @@ namespace ApplicationLayer.Handlers.Recommendations
             _repository = repository;
         }
 
-        public async Task<SmartWorkoutPlanDto> Handle(GenerateSmartWorkoutPlanQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<SmartWorkoutPlanDto>> Handle(GenerateSmartWorkoutPlanQuery request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.MemberId, out Guid trainerId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid trainerId)) return ServiceResult<SmartWorkoutPlanDto>.Failure("Invalid Id");
 
             var member = await _repository.GetAsync(trainerId);
 
-            if (member is null) return null;
+            if (member is null) return ServiceResult<SmartWorkoutPlanDto>.Failure("Member was not found");
             //we recommend basic if user is using free plans to make him incrementaly subscribe 
             //and make him get premium in case he is on basic plan 
             var planType = member.WorkoutPlans.Select(x=> x.PlanType == PlanType.FREE).ToList().Count() > 10 ?
@@ -98,7 +92,8 @@ namespace ApplicationLayer.Handlers.Recommendations
 
             var sessions = new SmartWorkoutSessionDto(planStartDate.AddDays(7), focusArea, exercise);
 
-            return new SmartWorkoutPlanDto(planType, (int) days, planStartDate, sessions);
+            return ServiceResult<SmartWorkoutPlanDto>.Success("",
+                new SmartWorkoutPlanDto(planType, (int)days, planStartDate, sessions)); 
         }
     }
 }

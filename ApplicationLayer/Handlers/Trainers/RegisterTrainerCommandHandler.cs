@@ -1,12 +1,8 @@
-﻿using ApplicationLayer.Commands.Trainers;
-using ApplicationLayer.Contracts;
-using ApplicationLayer.Helpers;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handler.Trainers
 {
-    public class RegisterTrainerCommandHandler : IRequestHandler<RegisterTrainerCommand, Guid?>
+    public class RegisterTrainerCommandHandler : IRequestHandler<RegisterTrainerCommand, ServiceResult<Guid>>
     {
         private readonly IApplicationRepository<Trainer> _repository;
 
@@ -15,26 +11,24 @@ namespace ApplicationLayer.Handler.Trainers
             _repository = repository;
         }
 
-        public async Task<Guid?> Handle(RegisterTrainerCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<Guid>> Handle(RegisterTrainerCommand request, CancellationToken cancellationToken)
         {
             var trainer = await _repository.GetAsync(u => u.Email == request.Email);
 
             if (trainer is not null)
-                return null;
+                return ServiceResult<Guid>.Failure("Trainer was not found");
 
             var hashedPassword = SecurityHelpers.HashPassword(request.Password);
 
             trainer = Trainer.Factory(
                     request.FullName, request.Username, request.Email, 
                     hashedPassword,  request.Specialty
-            );
+            ); 
 
-            var result = await _repository.CreateAsync(trainer);
-
-            if (!result)
-                return null;
-
-            return trainer.Id;
+            return await _repository.CreateAsync(trainer) ?
+                ServiceResult<Guid>.Success("Trainer was created successfully", trainer.Id) :
+                ServiceResult<Guid>.Failure("Failed to create trainer");
+            
         }
     }
 }

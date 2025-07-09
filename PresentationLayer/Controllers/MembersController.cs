@@ -1,12 +1,12 @@
 ﻿using ApplicationLayer.Commands.Members;
 using ApplicationLayer.Dtos.Members;
-using ApplicationLayer.Queries.Members;
-using DomainLayer.Entities;
+using ApplicationLayer.Queries.Members; 
 using MediatR; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [AuthorizeRoles("MEMBER")]
     [Route("api/v1/members")]
     [ApiController]
     public class MembersController : ControllerBase
@@ -27,9 +27,9 @@ namespace PresentationLayer.Controllers
 
             var result = await _mediator.Send(command);
 
-            return result.ToString() is null ?
-                BadRequest("Something went wrong while creating new member") :
-                Ok(new { resourceId = result });
+            return result.SuccessOrNot ?
+                Ok(new { resourceId = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpGet("{id}")]
@@ -39,9 +39,9 @@ namespace PresentationLayer.Controllers
 
             var result = await _mediator.Send(query);
 
-            return result is null ?
-                NotFound($"No member was found using this id : {id}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpPost("{userid}/workout")]
@@ -53,9 +53,9 @@ namespace PresentationLayer.Controllers
 
             var result = await _mediator.Send(command);
 
-            return !result ?
-                BadRequest("Something went wrong while creating a workout log") :
-                Ok("Workout log was created successfully");
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpGet("{userid}/workout/logs")]
@@ -65,9 +65,9 @@ namespace PresentationLayer.Controllers
 
             var result = await _mediator.Send(query);
 
-            return !result.Any() ?
-                NotFound("No workout log was found") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
 
         [HttpPost("{memberid}/nutrition")]
@@ -79,9 +79,9 @@ namespace PresentationLayer.Controllers
 
             var result = await _mediator.Send(command);
 
-            return !result ?
-                BadRequest("Something went wrong while creating a nutrition plan") :
-                Ok("Nutrition plan was created successfully");
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpGet("{memberid}/nutrition")]
@@ -91,9 +91,9 @@ namespace PresentationLayer.Controllers
 
             var result = await _mediator.Send(query);
 
-            return !result.Any() ?
-                NotFound($"No nutrition plan was found for member with id : {memberid}") :
-                Ok("Nutrition plan was created successfully"); 
+            return result.SuccessOrNot ?
+                NoContent() :
+                BadRequest(result.Message);
         }
 
         [HttpGet("{memberid}/progress")]
@@ -103,9 +103,9 @@ namespace PresentationLayer.Controllers
 
             var result = await _mediator.Send(query);
 
-            return result is null ?
-                NotFound($"No progress report was found for member with id : {memberid}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result.Data }) :
+                BadRequest(result.Message);
         }
     }
 }

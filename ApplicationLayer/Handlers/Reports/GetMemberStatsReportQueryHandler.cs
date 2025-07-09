@@ -1,12 +1,8 @@
-﻿using ApplicationLayer.Contracts;
-using ApplicationLayer.Dtos.Members;  
-using ApplicationLayer.Queries.Reports;
-using DomainLayer.Entities;
-using MediatR;
+﻿ 
 
 namespace ApplicationLayer.Handlers.Reports
 {
-    public class GetMemberStatsReportQueryHandler : IRequestHandler<GetMemberStatsReportQuery, GetMembeStatsReportDto>
+    public class GetMemberStatsReportQueryHandler : IRequestHandler<GetMemberStatsReportQuery, ServiceResult<GetMembeStatsReportDto>>
     {
         private readonly IApplicationRepository<Member> _memberRepository; 
 
@@ -16,13 +12,13 @@ namespace ApplicationLayer.Handlers.Reports
             _memberRepository = memberRepository; 
         }
     
-        public async Task<GetMembeStatsReportDto> Handle(GetMemberStatsReportQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<GetMembeStatsReportDto>> Handle(GetMemberStatsReportQuery request, CancellationToken cancellationToken)
         {  
-            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return null;
+            if (!Guid.TryParse(request.MemberId, out Guid memberId)) return ServiceResult<GetMembeStatsReportDto>.Failure("Invalid Id");
 
             var member = await _memberRepository.GetAsync(memberId);
 
-            if (member is null) return null;
+            if (member is null) return ServiceResult<GetMembeStatsReportDto>.Failure("Member was not found");
 
             var workoutLogs = member.WorkoutLogs.ToList();
             var nutritionPlans = member.NutritionPlans.ToList();
@@ -37,21 +33,23 @@ namespace ApplicationLayer.Handlers.Reports
                 .Distinct()
                 .Count();
              
-            return workoutLogs.Any() && nutritionPlans.Any() ? 
-                new GetMembeStatsReportDto(
+            return workoutLogs.Any() && nutritionPlans.Any() ?
+                ServiceResult<GetMembeStatsReportDto>.Success("",
+                    new GetMembeStatsReportDto(
                     member.FullName,
                     lastLog.WeightKg,
                     workoutLogs[0].WeightKg,
-                    lastprogressReport?.MuscleMass?? 0,
+                    lastprogressReport?.MuscleMass ?? 0,
                     lastprogressReport?.BodyFatPercentage ?? 0,
                     workoutLogs.Count(),
                     workoutDaysThisMonth,
                     lastLog.PerformedOn,
                     nutritionPlans.Count(),
                     member.Goal
-                )
+                    )
+                ) 
                 :
-                null;
+                ServiceResult<GetMembeStatsReportDto>.Failure("Failed to get member stats");
         }
     }
 }

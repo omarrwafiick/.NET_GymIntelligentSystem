@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [AuthorizeRoles("MEMBER")]
     [Route("api/v1/recommendations")]
     [ApiController]
     public class RecommendationsController : ControllerBase
@@ -12,8 +13,7 @@ namespace PresentationLayer.Controllers
 
         public RecommendationsController(IMediator mediator)
         {
-            _mediator = mediator;
-
+            _mediator = mediator; 
         }
 
         [HttpGet("recommendation/workout-plan/{memberId}")]
@@ -21,9 +21,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GenerateSmartWorkoutPlanQuery(memberId);
             var result = await _mediator.Send(query);
-            return result is null ?
-                BadRequest($"Generation of a smart workout plan couldn't be created to member with id : {memberId}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message); 
         }
 
         [HttpGet("recommendation/nutrition-plan/{memberId}")]
@@ -31,9 +31,9 @@ namespace PresentationLayer.Controllers
         {
             var query = new GenerateSmartNutritionPlanQuery(memberId);
             var result = await _mediator.Send(query);
-            return result is null ?
-                BadRequest($"Generation of a smart nutrition plan couldn't be created to member with id : {memberId}") :
-                Ok(new { data = result });
+            return result.SuccessOrNot ?
+                Ok(new { data = result }) :
+                BadRequest(result.Message);
         }
     }
 }
