@@ -1,14 +1,39 @@
-﻿ 
-using DomainLayer.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿  
 
 namespace ApplicationLayer.Dtos.Subscriptions
-{ 
+{
     public record PurchaseSubscriptionDto(
-        [Required] string MemberId, [Required] string SubscriptionId, [Required] PlanType PlanType, 
-        [Required] DateTime StartDate,[Required] int DurationInDays, [Required] decimal Amount,
-        [Required] CurrencyType Currency, [Required] PaymentMethod PaymentMethod, [Required] string Description);
-    
+        [Required(ErrorMessage = "Member ID is required.")]
+        string MemberId,
+
+        [Required(ErrorMessage = "Subscription ID is required.")]
+        string SubscriptionId,
+
+        [Required(ErrorMessage = "Plan type is required.")]
+        PlanType PlanType,
+
+        [Required(ErrorMessage = "Start date is required.")]
+        DateTime StartDate,
+
+        [Required(ErrorMessage = "Duration in days is required.")]
+        [Range(1, 365, ErrorMessage = "Duration must be between 1 and 365 days.")]
+        int DurationInDays,
+
+        [Required(ErrorMessage = "Amount is required.")]
+        [Range(0.01, 100000.00, ErrorMessage = "Amount must be greater than 0.")]
+        decimal Amount,
+
+        [Required(ErrorMessage = "Currency is required.")]
+        CurrencyType Currency,
+
+        [Required(ErrorMessage = "Payment method is required.")]
+        PaymentMethod PaymentMethod,
+
+        [Required(ErrorMessage = "Description is required.")]
+        [MinLength(3, ErrorMessage = "Description must be at least 3 characters long.")]
+        string Description
+    );
+
     public record GetSubscriptionDto(
          Guid MemberId, PlanType PlanType,DateTime StartDate, DateTime EndDate, int DurationInDays);
      
@@ -17,7 +42,30 @@ namespace ApplicationLayer.Dtos.Subscriptions
             PaymentMethod PaymentMethod, DateTime PaidAt, string Description);
 
     public record UpgradeSubscriptionDto(
-        [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] string SubscriptionId, 
-        [Required] PlanType PlanType, [Required] decimal Amount, 
-        [Required] CurrencyType Currency,[Required] PaymentMethod PaymentMethod, [Required] string Description);
+        [Required(ErrorMessage = "Start date is required.")]
+        DateTime StartDate,
+
+        [Required(ErrorMessage = "End date is required.")]
+        DateTime EndDate,
+
+        [Required(ErrorMessage = "Subscription ID is required.")]
+        string SubscriptionId,
+
+        [Required(ErrorMessage = "Plan type is required.")]
+        PlanType PlanType,
+
+        [Required(ErrorMessage = "Amount is required.")]
+        [Range(0.01, 100000.00, ErrorMessage = "Amount must be greater than 0.")]
+        decimal Amount,
+
+        [Required(ErrorMessage = "Currency is required.")]
+        CurrencyType Currency,
+
+        [Required(ErrorMessage = "Payment method is required.")]
+        PaymentMethod PaymentMethod,
+
+        [Required(ErrorMessage = "Description is required.")]
+        [MinLength(3, ErrorMessage = "Description must be at least 3 characters long.")]
+        string Description
+    ); 
 }

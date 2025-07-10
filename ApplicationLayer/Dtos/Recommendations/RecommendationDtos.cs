@@ -1,6 +1,4 @@
-﻿
-using DomainLayer.Enums;
-
+﻿ 
 namespace ApplicationLayer.Dtos.Recommendations
 {
     public record SmartNutritionPlanDto(

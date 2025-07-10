@@ -46,8 +46,8 @@ namespace InfrastructureLayer.Data
                     Permission.Factory(PermissionType.Create),
                 ]
             );
-            #endregion
-            
+            #endregion 
+
         }
     }
 }
