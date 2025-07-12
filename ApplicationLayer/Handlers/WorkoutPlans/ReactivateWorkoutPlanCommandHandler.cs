@@ -19,6 +19,8 @@ namespace ApplicationLayer.Commands.WorkoutPlans
 
             if (workoutPlan == null) return ServiceResult<bool>.Failure("Workout plan was not found");
 
+            if (!workoutPlan.IsActive) return ServiceResult<bool>.Failure("Workout plan is already deactivated");
+
             workoutPlan.Deactivate();
             
             return await _repository.UpdateAsync(workoutPlan) ?

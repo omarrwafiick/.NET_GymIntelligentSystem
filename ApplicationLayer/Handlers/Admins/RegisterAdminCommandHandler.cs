@@ -19,10 +19,10 @@ namespace ApplicationLayer.Handlers.Admins
 
         public async Task<ServiceResult<Guid>> Handle(RegisterAdminCommand request, CancellationToken cancellationToken)
         {
-            var admin = await _repository.GetAsync(u => u.Email == request.Email);
+            var admin = await _repository.GetAsync(u => u.Email == request.Email || u.Username == u.Username);
 
             if (admin is not null)
-                return ServiceResult<Guid>.Failure("User is already exists");
+                return ServiceResult<Guid>.Failure("User is already exists with same email or username");
 
             var hashedPassword = SecurityHelpers.HashPassword(request.Password);
 

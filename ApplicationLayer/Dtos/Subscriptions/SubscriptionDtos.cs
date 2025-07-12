@@ -10,7 +10,7 @@ namespace ApplicationLayer.Dtos.Subscriptions
         string SubscriptionId,
 
         [Required(ErrorMessage = "Plan type is required.")]
-        PlanType PlanType,
+        string PlanType,
 
         [Required(ErrorMessage = "Start date is required.")]
         DateTime StartDate,
@@ -24,10 +24,10 @@ namespace ApplicationLayer.Dtos.Subscriptions
         decimal Amount,
 
         [Required(ErrorMessage = "Currency is required.")]
-        CurrencyType Currency,
+        string Currency,
 
         [Required(ErrorMessage = "Payment method is required.")]
-        PaymentMethod PaymentMethod,
+        string PaymentMethod,
 
         [Required(ErrorMessage = "Description is required.")]
         [MinLength(3, ErrorMessage = "Description must be at least 3 characters long.")]
@@ -52,17 +52,17 @@ namespace ApplicationLayer.Dtos.Subscriptions
         string SubscriptionId,
 
         [Required(ErrorMessage = "Plan type is required.")]
-        PlanType PlanType,
+        string PlanType,
 
         [Required(ErrorMessage = "Amount is required.")]
         [Range(0.01, 100000.00, ErrorMessage = "Amount must be greater than 0.")]
         decimal Amount,
 
         [Required(ErrorMessage = "Currency is required.")]
-        CurrencyType Currency,
+        string Currency,
 
         [Required(ErrorMessage = "Payment method is required.")]
-        PaymentMethod PaymentMethod,
+        string PaymentMethod,
 
         [Required(ErrorMessage = "Description is required.")]
         [MinLength(3, ErrorMessage = "Description must be at least 3 characters long.")]

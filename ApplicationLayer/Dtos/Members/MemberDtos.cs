@@ -26,7 +26,7 @@ namespace ApplicationLayer.Dtos.Members
         float WeightKg,
 
         [Required(ErrorMessage = "Goal is required.")]
-        Goal Goal,
+        string Goal,
 
         [Required(ErrorMessage = "Date of birth is required.")]
         DateOnly DateOfBirth,
@@ -61,7 +61,7 @@ namespace ApplicationLayer.Dtos.Members
         string MemberId,
 
         [Required(ErrorMessage = "Exercise type is required.")]
-        ExerciseType ExerciseType,
+        string ExerciseType,
 
         [Range(1, 10, ErrorMessage = "Sets must be between 1 and 10.")]
         int Sets,

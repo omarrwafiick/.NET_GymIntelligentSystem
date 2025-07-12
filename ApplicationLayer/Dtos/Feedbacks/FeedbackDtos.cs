@@ -15,7 +15,7 @@ namespace ApplicationLayer.Dtos.Feedbacks
         string Comment,
 
         [Required(ErrorMessage = "Target type is required.")]
-        TargetType TargetType, 
+        string TargetType, 
         string TargetId  
     );
     public record ContactSupportDto(
@@ -40,7 +40,7 @@ namespace ApplicationLayer.Dtos.Feedbacks
         string Message,
 
         [Required(ErrorMessage = "Audience type is required.")]
-        AudienceType Audience
+        string Audience
     );
     public record GetAnnouncementDto(string Title, string Message, DateTime SentAt);
      

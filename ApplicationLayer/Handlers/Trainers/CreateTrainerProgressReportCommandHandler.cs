@@ -21,7 +21,7 @@ namespace ApplicationLayer.Handler.Trainers
         }
 
         public async Task<ServiceResult<bool>> Handle(CreateTrainerProgressReportCommand request, CancellationToken cancellationToken)
-        {
+        { 
             if (!Guid.TryParse(request.MemberId, out Guid memberId)
                 || !Guid.TryParse(request.TrainerId, out Guid trainerId)) return ServiceResult<bool>.Failure("Invalid Id/s");
 

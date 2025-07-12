@@ -20,7 +20,7 @@ namespace PresentationLayer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProfile([FromRoute] string id, [FromBody] UpdateProfileDtos dto)
         {
-            var command = new UpdateProfileCommand(id, dto.Username, dto.Fullname);
+            var command = new UpdateProfileCommand(id, dto.Username, dto.FullName);
             var result = await _mediator.Send(command);
             return result.SuccessOrNot ?
                 Ok(result.Message) :

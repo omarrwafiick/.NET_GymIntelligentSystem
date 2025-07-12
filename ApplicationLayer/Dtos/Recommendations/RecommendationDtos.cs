@@ -11,7 +11,7 @@ namespace ApplicationLayer.Dtos.Recommendations
          DateTime RecommendedStartDate
     );
 
-    public record SmartWorkoutPlanDto( 
+    public record SmartWorkoutPlanDto(
          PlanType PlanType,  
          int DurationInDays,
          DateTime RecommendedStartDate,

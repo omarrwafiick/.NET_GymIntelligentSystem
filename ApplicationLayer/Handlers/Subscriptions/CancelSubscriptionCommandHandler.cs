@@ -19,6 +19,9 @@ namespace ApplicationLayer.Handler.Subscriptions
 
             if(subscribtion is null) return ServiceResult<bool>.Failure("Subscription was not found");
 
+            if (subscribtion.Status == SubscriptionStatus.Cancelled) 
+                return ServiceResult<bool>.Failure("Subscribtion is already cancelled");
+
             subscribtion.Cancel();
 
             return await _repository.UpdateAsync(subscribtion) ?

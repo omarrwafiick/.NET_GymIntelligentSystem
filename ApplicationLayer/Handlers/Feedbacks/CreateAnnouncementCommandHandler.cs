@@ -12,7 +12,11 @@ namespace ApplicationLayer.Handlers.Feedbacks
 
         public async Task<ServiceResult<bool>> Handle(CreateAnnouncementCommand request, CancellationToken cancellationToken)
         {
-            var announcement = Announcement.Factory(request.Title, request.Message, request.Audience);
+            var audience = Enum.GetValues(typeof(AudienceType)).Cast<string>().ToArray();
+
+            if (!audience.Any(a => a == request.Audience)) ServiceResult<bool>.Failure("Invalid audience");
+
+            var announcement = Announcement.Factory(request.Title, request.Message, Enum.Parse<AudienceType>(request.Audience));
 
             return await _repository.CreateAsync(announcement) ?
                 ServiceResult<bool>.Success("Announcement was created successfully") :

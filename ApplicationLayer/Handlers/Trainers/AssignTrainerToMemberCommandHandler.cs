@@ -27,13 +27,15 @@ namespace ApplicationLayer.Handler.Trainers
             var relationExists = await _memberTrainerRepository.GetAsync(
                 m => m.TrainerId == trainerId && m.MemberId == memberId);
 
-            if (member is null || trainer is null || relationExists is not null) 
+            if (member is null || trainer is null)  
                 return ServiceResult<bool>.Failure("Entities Data was not found completely");
+
+            if (relationExists is not null)
+                return ServiceResult<bool>.Failure("Trainer already assigned to this member");
 
             return await _memberTrainerRepository.CreateAsync(MemberTrainer.Factory(memberId, trainerId)) ?
                 ServiceResult<bool>.Success("Trainer was assigned to member successfully") :
-                ServiceResult<bool>.Failure("Failed to assigned trainer to member");
-
+                ServiceResult<bool>.Failure("Failed to assigned trainer to member"); 
         }
     }
 }

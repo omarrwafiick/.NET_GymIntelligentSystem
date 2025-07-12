@@ -9,7 +9,7 @@ namespace ApplicationLayer.Commands.Members
     string Password,
     float HeightCm,
     float WeightKg,
-    Goal Goal,
+    string Goal,
     bool IsMale,  
     DateOnly DateOfBirth
     ) : IRequest<ServiceResult<Guid>>;

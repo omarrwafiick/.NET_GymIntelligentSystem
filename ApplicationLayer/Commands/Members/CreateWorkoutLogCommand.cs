@@ -3,6 +3,6 @@
 namespace ApplicationLayer.Commands.Members
 { 
     public record CreateWorkoutLogCommand(
-        string MemberId, ExerciseType ExerciseType, int Sets, int Reps, float WeightKg, string Notes
+        string MemberId, string ExerciseType, int Sets, int Reps, float WeightKg, string Notes
     ) : IRequest<ServiceResult<bool>>;
 }

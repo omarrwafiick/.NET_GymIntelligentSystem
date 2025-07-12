@@ -19,7 +19,7 @@ namespace ApplicationLayer.Dtos.WorkoutPlans
         string MemberId,
 
         [Required(ErrorMessage = "Plan type is required.")]
-        PlanType PlanType,
+        string PlanType,
 
         [Required(ErrorMessage = "Start date is required.")]
         DateTime StartDate,
@@ -29,6 +29,6 @@ namespace ApplicationLayer.Dtos.WorkoutPlans
         int DurationInDays,
 
         [Required(ErrorMessage = "Focus area is required.")]
-        FocusArea FocusArea
+        string FocusArea
     );  
 }

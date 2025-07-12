@@ -19,7 +19,7 @@ namespace ApplicationLayer.Dtos.Trainers
         string Password,
 
         [Required(ErrorMessage = "Specialty is required.")]
-        Speciality Specialty
+        string Specialty
     );
 
     public record CreateTrainerProgressReportDto(

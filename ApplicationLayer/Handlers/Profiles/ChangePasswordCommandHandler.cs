@@ -15,7 +15,12 @@ namespace ApplicationLayer.Handlers.Profiles
         {
             var user = await _repository.GetAsync(u => u.Email == request.Email);
 
-            if (user == null) return ServiceResult<bool>.Failure("User was not found") ; 
+            if (user == null) return ServiceResult<bool>.Failure("User was not found") ;
+
+            var passwordComparison =
+                SecurityHelpers.HashPassword(request.Password) == user.PasswordHash;
+
+            if (passwordComparison) return ServiceResult<bool>.Failure("Password is the same as old please change it");
 
             var newHashedPassword = SecurityHelpers.HashPassword(request.Password);
             user.ChangePassword(newHashedPassword);
